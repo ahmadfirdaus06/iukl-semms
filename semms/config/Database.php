@@ -5,6 +5,7 @@
      private $username = 'root';
      private $password = '';
      private $conn;
+     
 
      public function connect(){
          $this->conn = null;
