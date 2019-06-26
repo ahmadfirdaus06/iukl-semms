@@ -1,4 +1,11 @@
 This is the Web UI platform for IUKL Counseling Department for IUKL SEMMS system.
+
+Users involved are:
+1. Counselor
+2. Invigilator
+3. Admin
+4. Bursary Admin
+
 Some the features are:
 1. Report submission for any student misconduct during examination
 2. Open case for any report
