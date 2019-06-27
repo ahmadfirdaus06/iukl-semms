@@ -8,7 +8,13 @@
     $database = new Database();
     $db = $database->connect();
     $user = new User($db);
-    $result = $user->readAll();
+    if (isset($_GET['user_id'])){
+        $user->user_id = isset($_GET['user_id']) ? $_GET['user_id'] : die();
+        $result = $user->readById();
+    }
+    else{
+        $result = $user->readAll();
+    }
 
     $num = $result->rowCount();
 
