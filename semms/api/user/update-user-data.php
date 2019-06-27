@@ -1,7 +1,7 @@
 <?php 
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: application/json');
-    header('Access-Control-Allow-Methods: DELETE');
+    header('Access-Control-Allow-Methods: PUT');
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
     include_once '../../config/Database.php';
@@ -15,16 +15,20 @@
     $data = json_decode(file_get_contents("php://input"));
 
     $user->user_id = $data->user_id;
+    $user->staff_id = $data->staff_id;
+    $user->password = $data->password;
+    $user->name = $data->name;
+    $user->contact_no = $data->contact_no;
+    $user->user_type = $data->user_type;
+    $user->email = $data->email;
 
-    if($user->delete()) {
+    if($user->updateUserData()) {
         echo json_encode(
-            array('message' => 'User Deleted')
+            array('message' => 'User Data Updated')
         );
-    } 
-    else {
+    } else {
         echo json_encode(
-            array('message' => 'User Not Deleted')
+            array('message' => 'User Data Not Updated')
         );
     }
-
 ?>

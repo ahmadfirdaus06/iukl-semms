@@ -21,7 +21,7 @@
         }
 
         public function readAll(){
-            $query = 'SELECT * FROM ' . $this->table;
+            $query = 'SELECT * FROM ' . $this->table . ' ORDER BY created_date DESC';
             
             $stmt = $this->conn->prepare($query);
 
@@ -42,16 +42,110 @@
             return $stmt;
         }
 
-        public function insert(){
+        public function create(){
+            
+            $query = 'INSERT INTO ' . $this->table . ' SET staff_id = :staff_id, password = :password, name = :name, contact_no = :contact_no, user_type = :user_type, email = :email';
+            
+            $stmt = $this->conn->prepare($query);
 
+            $this->staff_id = htmlspecialchars(strip_tags($this->staff_id));
+            $this->password = password_hash("123", PASSWORD_DEFAULT); //verify using -> password_verify ( string $password , string $hash )
+            $this->name = htmlspecialchars(strip_tags($this->name));
+            $this->contact_no = htmlspecialchars(strip_tags($this->contact_no));
+            $this->user_type = htmlspecialchars(strip_tags($this->user_type));
+            $this->email = htmlspecialchars(strip_tags($this->email));
+
+            $stmt->bindParam(':staff_id', $this->staff_id);
+            $stmt->bindParam(':password', $this->password);
+            $stmt->bindParam(':name', $this->name);
+            $stmt->bindParam(':contact_no', $this->contact_no);
+            $stmt->bindParam(':user_type', $this->user_type);
+            $stmt->bindParam(':email', $this->email);
+
+            if($stmt->execute()) {
+                return true;
+            }
+
+            printf("Error: %s.\n", $stmt->error);
+
+            return false;
         }
 
-        public function update(){
+        public function updateUserData(){
+            $query = 'UPDATE ' . $this->table . '
+            SET staff_id = :staff_id, password = :password, name = :name, contact_no = :contact_no, user_type = :user_type, email = :email, modified_date = :modified_date
+            WHERE user_id = :user_id';
 
+            $stmt = $this->conn->prepare($query);
+
+            $this->staff_id = htmlspecialchars(strip_tags($this->staff_id));
+            $this->password = password_hash(htmlspecialchars(strip_tags($this->name)), PASSWORD_DEFAULT); //verify using -> password_verify ( string $password , string $hash )
+            $this->name = htmlspecialchars(strip_tags($this->name));
+            $this->contact_no = htmlspecialchars(strip_tags($this->contact_no));
+            $this->user_type = htmlspecialchars(strip_tags($this->user_type));
+            $this->email = htmlspecialchars(strip_tags($this->email));
+            $this->modified_date = date("Y-m-d H:i:s"); 
+            $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+
+            $stmt->bindParam(':staff_id', $this->staff_id);
+            $stmt->bindParam(':password', $this->password);
+            $stmt->bindParam(':name', $this->name);
+            $stmt->bindParam(':contact_no', $this->contact_no);
+            $stmt->bindParam(':user_type', $this->user_type);
+            $stmt->bindParam(':email', $this->email);
+            $stmt->bindParam(':modified_date', $this->modified_date);
+            $stmt->bindParam(':user_id', $this->user_id);
+
+            if($stmt->execute()) {
+                return true;
+            }
+
+            printf("Error: %s.\n", $stmt->error);
+
+            return false;
+        }
+
+        public function updateUserLog(){
+            $query = 'UPDATE ' . $this->table . '
+            SET modified_date = :modified_date, last_login = :last_login
+            WHERE user_id = :user_id';
+
+            $stmt = $this->conn->prepare($query);
+
+            $this->modified_date = date("Y-m-d H:i:s"); 
+            $this->last_login = date("Y-m-d H:i:s"); 
+            $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+
+            $stmt->bindParam(':modified_date', $this->modified_date);
+            $stmt->bindParam(':last_login', $this->last_login);
+            $stmt->bindParam(':user_id', $this->user_id);
+
+            if($stmt->execute()) {
+                return true;
+            }
+
+            printf("Error: %s.\n", $stmt->error);
+
+            return false;
         }
 
         public function delete(){
 
+            $query = 'DELETE FROM ' . $this->table . ' WHERE user_id = :user_id';
+
+            $stmt = $this->conn->prepare($query);
+
+            $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+
+            $stmt->bindParam(':user_id', $this->user_id);
+
+            if($stmt->execute()) {
+                return true;
+            }
+
+            printf("Error: %s.\n", $stmt->error);
+
+            return false;
         }
     
     }
