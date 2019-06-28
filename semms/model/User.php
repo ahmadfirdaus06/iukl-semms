@@ -42,6 +42,14 @@
             return $stmt;
         }
 
+        public function loginWeb(){
+
+        } 
+
+        public function loginMobile(){
+
+        }
+
         public function create(){
             
             $query = 'INSERT INTO ' . $this->table . ' SET staff_id = :staff_id, password = :password, name = :name, contact_no = :contact_no, user_type = :user_type, email = :email';
