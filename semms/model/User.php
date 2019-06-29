@@ -57,7 +57,7 @@
             $stmt = $this->conn->prepare($query);
 
             $this->staff_id = htmlspecialchars(strip_tags($this->staff_id));
-            $this->password = password_hash("123", PASSWORD_DEFAULT); //verify using -> password_verify ( string $password , string $hash )
+            $this->password = password_hash("123", PASSWORD_BCRYPT); //verify using -> password_verify ( string $password , string $hash )
             $this->name = htmlspecialchars(strip_tags($this->name));
             $this->contact_no = htmlspecialchars(strip_tags($this->contact_no));
             $this->user_type = htmlspecialchars(strip_tags($this->user_type));
@@ -87,7 +87,7 @@
             $stmt = $this->conn->prepare($query);
 
             $this->staff_id = htmlspecialchars(strip_tags($this->staff_id));
-            $this->password = password_hash(htmlspecialchars(strip_tags($this->name)), PASSWORD_DEFAULT); //verify using -> password_verify ( string $password , string $hash )
+            $this->password = password_hash(htmlspecialchars(strip_tags($this->password)), PASSWORD_BCRYPT); //verify using -> password_verify ( string $password , string $hash )
             $this->name = htmlspecialchars(strip_tags($this->name));
             $this->contact_no = htmlspecialchars(strip_tags($this->contact_no));
             $this->user_type = htmlspecialchars(strip_tags($this->user_type));
