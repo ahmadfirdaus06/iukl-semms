@@ -41,10 +41,9 @@
                     'last_login' => $last_login
                 );
                 $_SESSION['user'] = $user_attr;
-                $SESSION['user_id'] = $row['user_id'];
-                $SESSION['user_type'] = $row['user_type'];
                 array_push($user_arr['data'], $user_attr);
                 $user_arr['message'] = 'Access Granted!';
+                header("location:http://localhost/iukl-semms/semms/main.php");
                 echo json_encode($user_arr);
                 // echo json_encode(
                 //     array('message' => 'Access Granted!')
