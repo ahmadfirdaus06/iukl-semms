@@ -43,11 +43,27 @@
         }
 
         public function loginWeb(){
+            $query = 'SELECT * FROM ' . $this->table . ' WHERE staff_id = ? AND user_type != "Invigilator" LIMIT 0,1';
 
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindParam(1, $this->staff_id);
+
+            $stmt->execute();
+
+            return $stmt;
         } 
 
         public function loginMobile(){
+            $query = 'SELECT * FROM ' . $this->table . ' WHERE staff_id = ?  AND user_type = "Invigilator" LIMIT 0,1';
 
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindParam(1, $this->staff_id);
+
+            $stmt->execute();
+
+            return $stmt;
         }
 
         public function create(){
