@@ -1,3 +1,4 @@
-<div ng-app="semms">
-    <h1 style="text-align:center">This is the admin page</h1>
+<div class="container-fluid bg-white" style="text-align:center; height:100%" ng-app="semms">
+    <h1 style="text-align:center">This is the admin dashboard page</h1>
+    <button ng-controller="userCtrl" class="btn btn-danger" ng-click="logout()">Logout</button>
 </div>

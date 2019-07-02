@@ -23,7 +23,7 @@
 
     if ($num > 0){
         $user_arr = array();
-        $user_arr['data'] = array();
+        $user_arr['user_data'] = array();
 
         while($row = $result->fetch(PDO::FETCH_ASSOC)){
             if (password_verify(htmlspecialchars(strip_tags($user->password)), $row['password'])){
@@ -41,17 +41,13 @@
                     'last_login' => $last_login
                 );
                 $_SESSION['user'] = $user_attr;
-                array_push($user_arr['data'], $user_attr);
-                $user_arr['message'] = 'Access Granted!';
-                header("location:http://localhost/iukl-semms/semms/main.php");
+                array_push($user_arr['user_data'], $user_attr);
+                $user_arr['message'] = 'Access Granted';
                 echo json_encode($user_arr);
-                // echo json_encode(
-                //     array('message' => 'Access Granted!')
-                // );
             }
             else{
                 echo json_encode(
-                    array('message' => 'Access Denied!')
+                    array('message' => 'Access Denied')
                 );
             }
         }
@@ -59,7 +55,7 @@
     }
     else{
         echo json_encode(
-            array('message' => 'Access Denied!')
+            array('message' => 'Access Denied')
         );
     }
 ?>    

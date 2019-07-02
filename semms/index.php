@@ -14,9 +14,7 @@
             window.location.href = "#!login";
         </script>
     </head>
-    <body>
-        <!-- include one file modal -->
-        <div ng-include="'modal.php'"></div>
+    <body class="bg-dark">
         <div ng-view></div>
         <!-- custom angularjs script -->
         <script src="js\app.js"></script>

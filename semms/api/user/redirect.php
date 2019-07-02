@@ -1,14 +1,24 @@
 <?php
+    header('Access-Control-Allow-Origin: *');
+    header('Content-Type: application/json');
     session_start();
     if (isset($_SESSION['user'])){
-        if ($_SESSION['user_type'] == "Admin"){
-            header("location:admin/admin-page.php");
+        extract($_SESSION['user']);
+
+        if ($user_type == 'Admin'){
+            echo json_encode(
+                array('url' => 'admin/dashboard')
+            );
         }
-        else if ($_SESSION['user_type'] == "Bursary Admin"){
-            header("location:bursary_admin/fine-settlement-info.php");
+        else if ($user_type == 'Bursary Admin'){
+            echo json_encode(
+                array('url' => 'bursary/dashboard')
+            );
         }
-        else if ($_SESSION['user_type'] == "Counselor"){
-            header("location:counselor/dashboard.php");
-        }	
+        else if ($user_type == 'Counselor'){
+            echo json_encode(
+                array('url' => 'counselor/dashboard')
+            );
+        }
     }
 ?>

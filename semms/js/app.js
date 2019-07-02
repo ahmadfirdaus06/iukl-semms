@@ -1,15 +1,18 @@
 var app = angular.module('semms', ['ngRoute', 'admin', 'user']);
 app.config(function($routeProvider){
     $routeProvider
-    .when('/admin', {
+    .when('/', {
+        templateUrl: 'main.php',
+    })
+    .when('/admin/dashboard', {
         templateUrl: 'admin/admin-dashboard.php',
         controller: 'adminCtrl'
     })
-    .when('/bursary', {
+    .when('/bursary/dashboard', {
         templateUrl: 'bursary/bursary-dashboard.php',
         controller: 'bursaryCtrl'
     })
-    .when('/counselor', {
+    .when('/counselor/dashboard', {
         templateUrl: 'counselor/counselor-dashboard.php',
         controller: 'counselorCtrl'
     })
