@@ -1,5 +1,5 @@
 var app = angular.module('user', []);
-app.controller('userCtrl', function($scope, $http, $route, $timeout){
+app.controller('userCtrl', function($scope, $http, $route, $timeout, $window){
     angular.element(document).ready(function(){
         $('#loginModal').modal('show');
         $('#loginAlert').hide();
@@ -13,8 +13,7 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout){
         })
         .then(function mySuccess(response) {
             if (response.data.url != null){
-                $('#loginModal').modal('hide');
-                window.location.href = "#!" + response.data.url;
+                $window.location.replace("#!" + response.data.url);
             }
         }, 
         function myError(response) {
@@ -53,7 +52,7 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout){
             dataType: "application/json"
         })
         .then(function mySuccess(response) {
-            window.location.href = "#!" + response.data.url;
+            $window.location.href = "#!" + response.data.url;
         }, 
         function myError(response) {
                 // console.log(JSON.stringify(response));
