@@ -1,6 +1,6 @@
-var app = angular.module('admin', []);
-app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $location){
-    $scope.pageAccess = "Admin";
+var app = angular.module('bursary', []);
+app.controller('bursaryCtrl', function($scope, $http, $route, $timeout, $window, $location){
+    $scope.pageAccess = "Bursary Admin";
 
     $scope.checkAccess = function(){
         var data = {

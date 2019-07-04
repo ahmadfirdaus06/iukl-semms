@@ -1,4 +1,4 @@
-<HTML ng-app="semms">
+<HTML ng-app="semms" ng-controller="userCtrl" ng-init="checkAccess()">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- included library -->
@@ -9,16 +9,17 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <!-- page template -->
-        <script type="text/ng-template" src="login-page.php"></script>
         <script>
-            window.location.href = "#!login";
+            window.location.href = "#!/";
         </script>
     </head>
-    <body class="bg-dark">
+    <body>
         <div ng-view></div>
         <!-- custom angularjs script -->
         <script src="js\app.js"></script>
         <script src="js\admin.js"></script>
         <script src="js\user.js"></script>
+        <script src="js\bursary.js"></script>
+        <script src="js\counselor.js"></script>
     </body>
 </HTML>

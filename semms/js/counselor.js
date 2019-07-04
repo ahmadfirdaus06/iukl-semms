@@ -1,6 +1,6 @@
-var app = angular.module('admin', []);
-app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $location){
-    $scope.pageAccess = "Admin";
+var app = angular.module('counselor', []);
+app.controller('counselorCtrl', function($scope, $http, $route, $timeout, $window, $location){
+    $scope.pageAccess = "Counselor";
 
     $scope.checkAccess = function(){
         var data = {

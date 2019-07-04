@@ -1,8 +1,9 @@
-var app = angular.module('semms', ['ngRoute', 'admin', 'user']);
+var app = angular.module('semms', ['ngRoute', 'admin', 'user', 'bursary', 'counselor']);
 app.config(function($routeProvider){
     $routeProvider
     .when('/', {
-        templateUrl: 'main.php',
+        templateUrl: 'login-page.php',
+        controller: 'userCtrl'
     })
     .when('/admin/dashboard', {
         templateUrl: 'admin/admin-dashboard.php',
@@ -16,8 +17,15 @@ app.config(function($routeProvider){
         templateUrl: 'counselor/counselor-dashboard.php',
         controller: 'counselorCtrl'
     })
-    .when('/login', {
-        templateUrl: 'login-page.php',
-        controller: 'userCtrl'
+    .when('/counselor/report', {
+        templateUrl: 'admin/report.php',
+        controller: 'adminCtrl'
+    })
+    .when('/counselor/case', {
+        templateUrl: 'admin/case.php',
+        controller: 'adminCtrl'
+    })
+    .otherwise({ 
+        redirectTo:'/'
     });
 });
