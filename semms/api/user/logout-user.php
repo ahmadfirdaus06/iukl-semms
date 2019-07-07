@@ -30,7 +30,10 @@
    
 
    if(session_destroy()) {
-      $arr['url'] = 'login';
+      $arr['message'] = 'Success';
+   }
+   else{
+      $arr['message'] = 'Failed';
    }
 
    echo json_encode($arr);

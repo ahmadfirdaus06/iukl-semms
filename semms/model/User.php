@@ -96,6 +96,7 @@
         }
 
         public function updateUserData(){
+            date_default_timezone_set("Asia/Kuala_Lumpur");
             $query = 'UPDATE ' . $this->table . '
             SET staff_id = :staff_id, password = :password, name = :name, contact_no = :contact_no, user_type = :user_type, email = :email, modified_date = :modified_date
             WHERE user_id = :user_id';
@@ -130,6 +131,7 @@
         }
 
         public function updateUserLog(){
+            date_default_timezone_set("Asia/Kuala_Lumpur");
             $query = 'UPDATE ' . $this->table . '
             SET modified_date = :modified_date, last_login = :last_login
             WHERE user_id = :user_id';

@@ -1,7 +1,7 @@
 var app = angular.module('semms', ['ngRoute', 'admin', 'user', 'bursary', 'counselor']);
 app.config(function($routeProvider){
     $routeProvider
-    .when('/', {
+    .when('/login', {
         templateUrl: 'login-page.php',
         controller: 'userCtrl'
     })
@@ -26,6 +26,6 @@ app.config(function($routeProvider){
         controller: 'adminCtrl'
     })
     .otherwise({ 
-        redirectTo:'/'
+        redirectTo:'/login'
     });
 });

@@ -26,7 +26,7 @@
                 }
                 else{
                     echo json_encode(
-                        array('url' => '/')
+                        array('url' => '/login')
                     );  
                 }
             }

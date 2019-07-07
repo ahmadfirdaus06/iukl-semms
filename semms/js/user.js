@@ -3,7 +3,18 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     angular.element(document).ready(function(){
         $('#loginModal').modal('show');
         $('#loginAlert').hide();
+        $scope.getSession();
     });
+
+    $scope.hidePanel = function(){
+        $('#header').hide();
+        $('#footer').hide();
+    }
+
+    $scope.showPanel = function(){
+        $('#header').show();
+        $('#footer').show();
+    }
 
     $scope.checkSession = function(){
         $http({
@@ -13,7 +24,28 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         })
         .then(function mySuccess(response) {
             if (response.data.url != null){
+                $('#loginModal').modal('hide');
                 $location.path(response.data.url).replace();
+                $scope.getSession();
+                $scope.showPanel();
+            }
+        }, 
+        function myError(response) {
+                // console.log("Error");
+          });
+    }
+
+    $scope.getSession = function(){
+        $http({
+            method : "GET",
+            url : "http://localhost:8080/iukl-semms/semms/api/user/read-user-session-data.php",
+            dataType: "application/json"
+        })
+        .then(function mySuccess(response) {
+            if (response.data != ""){
+                $scope.name = response.data.user_session.name;
+                $scope.user_type = response.data.user_session.user_type;
+                $scope.last_login = "Last login: " + (response.data.user_session.last_login);
             }
         }, 
         function myError(response) {
@@ -46,13 +78,13 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     }
 
     $scope.logout = function(){
+        
         $http({
             method : "GET",
             url : "http://localhost:8080/iukl-semms/semms/api/user/logout-user.php",
             dataType: "application/json"
         })
         .then(function mySuccess(response) {
-            console.log(response);
             $location.path(response.data.url).replace();
         }, 
         function myError(response) {
