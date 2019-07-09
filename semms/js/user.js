@@ -1,13 +1,16 @@
 var app = angular.module('user', []);
-app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $location, $state){
+app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $location, $state, $rootScope){
     angular.element(document).ready(function(){
         $('#loginAlert').hide();
     });
 
+    // $rootScope.url = "http://localhost:8080/iukl-semms/semms";
+    $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
+
     $scope.checkSession = function(){
         $http({
             method : "GET",
-            url : "http://localhost:8080/iukl-semms/semms/api/user/redirect.php",
+            url : $rootScope.url + "/api/user/redirect.php",
             dataType: "application/json"
         })
         .then(function mySuccess(response) {
@@ -32,7 +35,7 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     $scope.getSession = function(){
         $http({
             method : "GET",
-            url : "http://localhost:8080/iukl-semms/semms/api/user/read-user-session-data.php",
+            url : $rootScope.url + "/api/user/read-user-session-data.php",
             dataType: "application/json"
         })
         .then(function mySuccess(response) {
@@ -54,7 +57,7 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         };
         $http({
             method : "POST",
-            url : "http://localhost:8080/iukl-semms/semms/api/user/login-web.php",
+            url : $rootScope.url + "/api/user/login-web.php",
             data: data,
             dataType: "application/json"
         })
@@ -79,7 +82,7 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         
         $http({
             method : "GET",
-            url : "http://localhost:8080/iukl-semms/semms/api/user/logout-user.php",
+            url : $rootScope.url + "/api/user/logout-user.php",
             dataType: "application/json"
         })
         .then(function mySuccess(response) {
