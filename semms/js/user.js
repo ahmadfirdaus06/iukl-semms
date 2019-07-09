@@ -4,9 +4,6 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         $('#loginAlert').hide();
     });
 
-    // $rootScope.url = "http://localhost:8080/iukl-semms/semms";
-    $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
-
     $scope.checkSession = function(){
         $http({
             method : "GET",

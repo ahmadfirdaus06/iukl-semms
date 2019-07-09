@@ -1,7 +1,7 @@
 <div ng-controller="userCtrl" ng-init="checkSession(); getSession()" class="container-fluid p-0">
     <div class="panel-default">
-        <div id="header" class="panel-heading p-3 bg-secondary" style="height:9%">
-            <div class="row" style="height:9%">
+        <div id="header" class="panel-heading p-3 bg-secondary" style="height:10%">
+            <div class="row" style="height:100%" >
                 <div class="col-sm my-auto">
                     <h2 class="text-white"><i>IUKL SEMMS</i></h2>
                 </div>
@@ -16,6 +16,6 @@
                 </div>
             </div>
         </div>
-        <div style="height:91%" class="panel-body"><div ui-view></div></div>
+        <div style="height:90%" class="panel-body"><div ui-view></div></div>
     </div>
 </div>
