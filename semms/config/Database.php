@@ -1,6 +1,6 @@
 <?php
  class Database{
-     private $host = 'semms.ddns.net';
+     private $host = '192.168.1.6';
      private $db_name = 'iukl_semms';
      private $username = 'root';
      private $password = '';
@@ -11,7 +11,7 @@
          $this->conn = null;
 
          try{
-            $this->conn = new PDO('mysql:host=' . $this->host . ';port="3306";dbname=' . $this->db_name, $this->username, $this->password);
+            $this->conn = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->db_name, $this->username, $this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
          }catch(PDOException $e){

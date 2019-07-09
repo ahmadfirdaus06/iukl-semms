@@ -27,3 +27,51 @@
 		</div>
 	</div>
 </div>
+
+<!-- Edit Profile Modal -->
+<div ng-controller="userCtrl" class="modal fade" id="editProfileModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-centered" >
+		<div class="modal-content">
+		
+			<div class="modal-header">
+				<h4><strong>Edit My Profile</strong></h4>
+				<button type="button" class="close btn btn-link" data-dismiss="modal">&times;</button>
+
+			</div>
+			<form>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="staff_id"><strong>Name</strong></label>
+						<input type="text" class="form-control" ng-model="edit.name" readonly>
+					</div>
+					<div class="form-group">
+						<label for="staff_id"><strong>Email</strong></label>
+						<input type="email" class="form-control" ng-model="edit.email" required>
+					</div>
+					<div class="form-group">
+						<label for="staff_id"><strong>Contact Number</strong></label>
+						<input type="text" class="form-control" ng-model="edit.contact_no" required>
+					</div>
+					<hr>
+					<div class="form-check">
+						<input type="checkbox" class="form-check-input" ng-model="edit.change_password">
+						<label class="form-check-label" >Change Password</label>
+					</div>
+					</br>
+					<div class="form-group">
+						<label for="password"><strong>New Password</strong></label>
+						<input type="password" class="form-control" ng-model="edit.new_password" ng-disabled="!edit.change_password" required>
+					</div>
+					<div class="form-group">
+						<label for="password"><strong>Confirm Password</strong></label>
+						<input type="password" class="form-control" ng-model="edit.confirm_password" ng-disabled="!edit.new_password || !edit.change_password" required>
+					</div>
+				</div>
+				<div class= "modal-footer">
+					<button class="btn btn-lg btn-success" ng-click=""><strong>Save</strong></button>
+					<button class="btn btn-lg btn-danger" data-dismiss="modal"><strong>Close</strong></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

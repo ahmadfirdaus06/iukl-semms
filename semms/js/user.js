@@ -1,20 +1,8 @@
 var app = angular.module('user', []);
-app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $location){
+app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $location, $state){
     angular.element(document).ready(function(){
-        $('#loginModal').modal('show');
         $('#loginAlert').hide();
-        $scope.getSession();
     });
-
-    $scope.hidePanel = function(){
-        $('#header').hide();
-        $('#footer').hide();
-    }
-
-    $scope.showPanel = function(){
-        $('#header').show();
-        $('#footer').show();
-    }
 
     $scope.checkSession = function(){
         $http({
@@ -25,9 +13,15 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         .then(function mySuccess(response) {
             if (response.data.url != null){
                 $('#loginModal').modal('hide');
-                $location.path(response.data.url).replace();
-                $scope.getSession();
-                $scope.showPanel();
+                $state.go(response.data.url, null, {
+                    location: 'replace'
+                });
+            }
+            else{
+                $('#loginModal').modal('show');
+                $state.go("login", null, {
+                    location: 'replace'
+                });
             }
         }, 
         function myError(response) {
@@ -66,7 +60,9 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         })
         .then(function mySuccess(response) {
             if (response.data.message == 'Access Granted'){
-                $scope.checkSession();
+                $state.go("main", null, {
+                    location: 'replace'
+                });
             }
             else if (response.data.message == 'Access Denied'){
                 $('#loginAlert').show();
@@ -85,7 +81,12 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
             dataType: "application/json"
         })
         .then(function mySuccess(response) {
-            $location.path(response.data.url).replace();
+            if (response.data.message == "Success"){
+                $state.go("login", null, {
+                    location: 'replace'
+                });
+            }
+            
         }, 
         function myError(response) {
                 // console.log(JSON.stringify(response));

@@ -11,22 +11,22 @@
             if ($user_type != $data->page_access){
                 if ($user_type == 'Admin'){
                     echo json_encode(
-                        array('url' => '/admin/dashboard')
+                        array('url' => 'main.admin-dashboard')
                     );
                 }
                 else if ($user_type == 'Bursary Admin'){
                     echo json_encode(
-                        array('url' => '/bursary/dashboard')
+                        array('url' => 'main.bursary-dashboard')
                     );
                 }
                 else if ($user_type == 'Counselor'){
                     echo json_encode(
-                        array('url' => 'counselor/dashboard')
+                        array('url' => 'main.counselor-dashboard')
                     );
                 }
                 else{
                     echo json_encode(
-                        array('url' => '/login')
+                        array('url' => 'login')
                     );  
                 }
             }
@@ -35,18 +35,23 @@
         else{
             if ($user_type == 'Admin'){
                 echo json_encode(
-                    array('url' => '/admin/dashboard')
+                    array('url' => 'main.admin-dashboard')
                 );
             }
             else if ($user_type == 'Bursary Admin'){
                 echo json_encode(
-                    array('url' => '/bursary/dashboard')
+                    array('url' => 'main.bursary-dashboard')
                 );
             }
             else if ($user_type == 'Counselor'){
                 echo json_encode(
-                    array('url' => '/counselor/dashboard')
+                    array('url' => 'main.counselor-dashboard')
                 );
+            }
+            else{
+                echo json_encode(
+                    array('url' => 'login')
+                );  
             }
         }
         

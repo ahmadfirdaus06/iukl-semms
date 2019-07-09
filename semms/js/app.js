@@ -1,31 +1,44 @@
-var app = angular.module('semms', ['ngRoute', 'admin', 'user', 'bursary', 'counselor']);
-app.config(function($routeProvider){
-    $routeProvider
-    .when('/login', {
+var app = angular.module('semms', ['ui.router', 'ngRoute', 'admin', 'user', 'bursary', 'counselor']);
+app.config(function($stateProvider, $urlRouterProvider){
+    
+    $urlRouterProvider.otherwise('/login');
+
+    $stateProvider
+    .state('login', {
+        url: '/login',
         templateUrl: 'login-page.php',
         controller: 'userCtrl'
     })
-    .when('/admin/dashboard', {
+    .state('main', {
+        url: '/main',
+        templateUrl: 'main.php',
+        controller: 'userCtrl'
+    })
+    .state('main.admin-dashboard', {
+        url: '/admin/dashboard',
         templateUrl: 'admin/admin-dashboard.php',
         controller: 'adminCtrl'
     })
-    .when('/bursary/dashboard', {
+    .state('main.bursary-dashboard', {
+        url: '/bursary/dashboard',
         templateUrl: 'bursary/bursary-dashboard.php',
         controller: 'bursaryCtrl'
     })
-    .when('/counselor/dashboard', {
+    .state('main.counselor-dashboard', {
+        url: '/counselor/dashboard',
         templateUrl: 'counselor/counselor-dashboard.php',
         controller: 'counselorCtrl'
     })
-    .when('/counselor/report', {
-        templateUrl: 'admin/report.php',
-        controller: 'adminCtrl'
+    .state('main.cases', {
+        url: '/counselor/cases',
+        templateUrl: 'counselor/cases.php',
+        controller: 'counselorCtrl'
     })
-    .when('/counselor/case', {
-        templateUrl: 'admin/case.php',
-        controller: 'adminCtrl'
-    })
-    .otherwise({ 
-        redirectTo:'/login'
+    .state('main.reports', {
+        url: '/counselor/reports',
+        templateUrl: 'counselor/reports.php',
+        controller: 'counselorCtrl'
     });
+
+    
 });
