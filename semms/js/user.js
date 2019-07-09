@@ -60,6 +60,8 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         })
         .then(function mySuccess(response) {
             if (response.data.message == 'Access Granted'){
+                $scope.staff_id = "";
+                $scope.password = "";
                 $state.go("main", null, {
                     location: 'replace'
                 });

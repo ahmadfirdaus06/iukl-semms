@@ -13,6 +13,7 @@
     </head>
     <body style="height:100%">
     <div ui-view></div>
+    <div ng-include="'modal.php'"></div>
     <!-- custom angularjs script -->
     <script src="js\app.js"></script>
     <script src="js\admin.js"></script>
