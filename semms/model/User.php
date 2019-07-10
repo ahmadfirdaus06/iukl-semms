@@ -97,9 +97,16 @@
 
         public function updateUserData(){
             date_default_timezone_set("Asia/Kuala_Lumpur");
-            $query = 'UPDATE ' . $this->table . '
-            SET staff_id = :staff_id, password = :password, name = :name, contact_no = :contact_no, user_type = :user_type, email = :email, modified_date = :modified_date
-            WHERE user_id = :user_id';
+            $query = "UPDATE " . $this->table . "
+            SET 
+            staff_id = IFNULL(:staff_id, staff_id), 
+            password = IFNULL(:password, password), 
+            name = IFNULL(:name, name), 
+            contact_no = IFNULL(:contact_no, contact_no), 
+            user_type = IFNULL(:user_type, user_type),
+            email = IFNULL(:email, email), 
+            modified_date = :modified_date
+            WHERE user_id = :user_id";
 
             $stmt = $this->conn->prepare($query);
 

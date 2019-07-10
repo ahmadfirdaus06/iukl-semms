@@ -2,6 +2,7 @@ var app = angular.module('user', []);
 app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $location, $state, $rootScope){
     angular.element(document).ready(function(){
         $('#loginAlert').hide();
+        $('#confirmPasswordAlert').hide();
     });
 
     $scope.checkSession = function(){
@@ -94,4 +95,56 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                 // console.log(JSON.stringify(response));
           });
     }
+
+    $scope.openEditProfileModal = function(){
+        $http({
+            method : "GET",
+            url : $rootScope.url + "/api/user/read-user-session-data.php",
+            dataType: "application/json"
+        })
+        .then(function mySuccess(response) {
+            if (response.data != ""){
+                $('#editProfileModal').modal('show');
+                $scope.edit = response.data.user_session;
+            }
+        }, 
+        function myError(response) {
+                // console.log("Error");
+        });
+    };
+
+    $scope.saveEditProfile = function(edit){
+        if (edit.change_password && edit.new_password != undefined && edit.confirm_password != undefined){
+            if (edit.confirm_password != edit.new_password){
+                $('#confirmPasswordAlert').show();
+            }
+            else{
+                $('#confirmPasswordAlert').hide();
+
+            }
+        }
+        var data = {
+            user_id: edit.user_id,
+            name: edit.name,
+            email: edit.email,
+            contact_no: edit.contact_no,
+            password: edit.new_password
+        };
+
+        $http({
+            method : "PUT",
+            url : $rootScope.url + "/api/user/update-user-data.php",
+            data: data,
+            dataType: "application/json"
+        })
+        .then(function mySuccess(response) {
+            console.log(response.data.message);
+        }, 
+        function myError(response) {
+                console.log("Error");
+        });
+        
+
+        
+    };
 });
