@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div style="height:85%" class="panel-body"><div ui-view></div></div>
+        <div style="height:85%" class="bg-dark panel-body p-3"><div ui-view></div></div>
     </div>
 </div>
 <div ng-include="'modal.php'"></div>

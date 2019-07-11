@@ -17,23 +17,44 @@
     if (array_key_exists("user_id", $data)){
         $user->user_id = $data->user_id;
     }
+    else{
+        $user->user_id = NULL;
+    }
     if (array_key_exists("staff_id", $data)){
         $user->staff_id = $data->staff_id;
+    }
+    else{
+        $user->staff_id = NULL;
     }
     if (array_key_exists("password", $data)){
         $user->password = $data->password;
     }
+    else{
+        $user->password = NULL;
+    }
     if (array_key_exists("name", $data)){
         $user->name = $data->name;
+    }
+    else{
+        $user->name = NULL;
     }
     if (array_key_exists("contact_no", $data)){
         $user->contact_no = $data->contact_no;
     }
+    else{
+        $user->contact_no = NULL;
+    }
     if (array_key_exists("user_type", $data)){
         $user->user_type = $data->user_type;
     }
+    else{
+        $user->user_type = NULL;
+    }
     if (array_key_exists("email", $data)){
         $user->email = $data->email;
+    }
+    else{
+        $user->email = NULL;
     }
     
     // $user->user_id = $data->user_id;

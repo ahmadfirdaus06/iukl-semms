@@ -12,7 +12,7 @@
 
     $data = json_decode(file_get_contents("php://input"));
 
-    if ($data->user_id != ""){
+    if (!is_null($data)){
         $user->user_id = $data->user_id;
         $result = $user->readById();
     }

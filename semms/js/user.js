@@ -6,6 +6,7 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     });
 
     $scope.checkSession = function(){
+        $("#loginModal").modal('show');
         $http({
             method : "GET",
             url : $rootScope.url + "/api/user/redirect.php",
@@ -123,28 +124,80 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
 
             }
         }
-        var data = {
-            user_id: edit.user_id,
-            name: edit.name,
-            email: edit.email,
-            contact_no: edit.contact_no,
-            password: edit.new_password
-        };
-
-        $http({
-            method : "PUT",
-            url : $rootScope.url + "/api/user/update-user-data.php",
-            data: data,
-            dataType: "application/json"
-        })
-        .then(function mySuccess(response) {
-            console.log(response.data.message);
-        }, 
-        function myError(response) {
-                console.log("Error");
+        bootbox.confirm({
+            message: "Are you sure you want to update your profile?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var data = {
+                        user_id: edit.user_id,
+                        name: edit.name,
+                        email: edit.email,
+                        contact_no: edit.contact_no,
+                        password: edit.new_password
+                    };
+            
+                    $http({
+                        method : "PUT",
+                        url : $rootScope.url + "/api/user/update-user-data.php",
+                        data: data,
+                        dataType: "application/json"
+                    })
+                    .then(function mySuccess(response) {
+                        if (response.data.message == "User Data Updated"){
+                            $('#editProfileModal').modal('hide');
+                            var box = bootbox.dialog({
+                                message: "<strong>Success!</strong>",
+                                backdrop: false,
+                                size: 'small'
+                            });
+                            box.find('.modal-content').addClass('text-success border border-success');
+                            box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
+                            setTimeout(function() {
+                                box.modal('hide');
+                            }, 1000);
+                        }
+                        else{
+                            var box = bootbox.dialog({
+                                message: "<strong>Failed! "+ response.data.message +"</strong>",
+                                backdrop: false,
+                                size: 'small'
+                            });
+                            box.find('.modal-content').addClass('text-danger border border-danger');
+                            box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
+                            setTimeout(function() {
+                                box.modal('hide');
+                            }, 1000);
+                        }
+                    }, 
+                    function myError(response) {
+                        var box = bootbox.dialog({
+                            message: "<strong>Error!</strong>",
+                            backdrop: false,
+                            size: 'small'
+                        });
+                        box.find('.modal-content').addClass('text-danger border border-danger');
+                        box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
+                        setTimeout(function() {
+                            box.modal('hide');
+                        }, 1000);
+                    });         
+                }
+            }
         });
-        
+    };
 
-        
+    $scope.cancelEditProfile = function(){
+        $('#editProfileModal').modal('hide');
+        $scope.edit = {};
     };
 });

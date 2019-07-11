@@ -30,11 +30,11 @@
 
 <!-- Edit Profile Modal -->
 <div ng-controller="userCtrl" class="modal fade" id="editProfileModal" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-lg modal-dialog-centered" >
+    <div class="modal-dialog modal-dialog-centered" >
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4><strong>Edit My Profile</strong></h4>
-				<button type="button" class="close btn btn-link" data-dismiss="modal">&times;</button>
+				<button type="button" class="close btn btn-link" ng-click="cancelEditProfile()">&times;</button>
 			</div>
 			<form>
 				<div class="modal-body">
@@ -70,7 +70,7 @@
 				</div>
 				<div class= "modal-footer">
 					<button class="btn btn-success" ng-click="saveEditProfile(edit)"><strong>Save</strong></button>
-					<button class="btn btn-danger" data-dismiss="modal"><strong>Close</strong></button>
+					<button class="btn btn-danger" ng-click="cancelEditProfile()"><strong>Close</strong></button>
 				</div>
 			</form>
 		</div>

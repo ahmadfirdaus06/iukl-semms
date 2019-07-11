@@ -97,7 +97,7 @@
 
         public function updateUserData(){
             date_default_timezone_set("Asia/Kuala_Lumpur");
-            $query = "UPDATE " . $this->table . "
+            $query = 'UPDATE ' . $this->table . '
             SET 
             staff_id = IFNULL(:staff_id, staff_id), 
             password = IFNULL(:password, password), 
@@ -106,18 +106,43 @@
             user_type = IFNULL(:user_type, user_type),
             email = IFNULL(:email, email), 
             modified_date = :modified_date
-            WHERE user_id = :user_id";
+            WHERE user_id = :user_id';
 
             $stmt = $this->conn->prepare($query);
 
-            $this->staff_id = htmlspecialchars(strip_tags($this->staff_id));
-            $this->password = password_hash(htmlspecialchars(strip_tags($this->password)), PASSWORD_BCRYPT); //verify using -> password_verify ( string $password , string $hash )
-            $this->name = htmlspecialchars(strip_tags($this->name));
-            $this->contact_no = htmlspecialchars(strip_tags($this->contact_no));
-            $this->user_type = htmlspecialchars(strip_tags($this->user_type));
-            $this->email = htmlspecialchars(strip_tags($this->email));
+            if (!is_null($this->staff_id)){
+                $this->staff_id = htmlspecialchars(strip_tags($this->staff_id));
+            }
+            if (!is_null($this->password)){
+                $this->password = password_hash(htmlspecialchars(strip_tags($this->password)), PASSWORD_BCRYPT); //verify using -> password_verify ( string $password , string $hash )
+            }
+            if (!is_null($this->name)){
+                $this->name = htmlspecialchars(strip_tags($this->name));
+            }
+            if (!is_null($this->contact_no)){
+                $this->contact_no = htmlspecialchars(strip_tags($this->contact_no));
+            }
+            if (!is_null($this->user_type)){
+                $this->user_type = htmlspecialchars(strip_tags($this->user_type));
+            }
+            if (!is_null($this->email)){
+                $this->email = htmlspecialchars(strip_tags($this->email));
+            }
+            if (!is_null($this->user_id)){
+                $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+            }
+            if (!is_null($this->staff_id)){
+                $this->staff_id = htmlspecialchars(strip_tags($this->staff_id));
+            }
+
+            // $this->staff_id = htmlspecialchars(strip_tags($this->staff_id));
+            // $this->password = password_hash(htmlspecialchars(strip_tags($this->password)), PASSWORD_BCRYPT); //verify using -> password_verify ( string $password , string $hash )
+            // $this->name = htmlspecialchars(strip_tags($this->name));
+            // $this->contact_no = htmlspecialchars(strip_tags($this->contact_no));
+            // $this->user_type = htmlspecialchars(strip_tags($this->user_type));
+            // $this->email = htmlspecialchars(strip_tags($this->email));
             $this->modified_date = date("Y-m-d H:i:s"); 
-            $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+            // $this->user_id = htmlspecialchars(strip_tags($this->user_id));
 
             $stmt->bindParam(':staff_id', $this->staff_id);
             $stmt->bindParam(':password', $this->password);
