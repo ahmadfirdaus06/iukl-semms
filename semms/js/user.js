@@ -165,6 +165,7 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                             setTimeout(function() {
                                 box.modal('hide');
                             }, 1000);
+                            $state.reload();
                         }
                         else{
                             var box = bootbox.dialog({
@@ -196,8 +197,10 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         });
     };
 
-    $scope.cancelEditProfile = function(){
+    $scope.cancelEditProfile = function(edit){
+        // if (edit.email != $scope.edit.email)
         $('#editProfileModal').modal('hide');
         $scope.edit = {};
+        $state.reload();
     };
 });
