@@ -3,6 +3,8 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     angular.element(document).ready(function(){
         $('#loginAlert').hide();
         $('#confirmPasswordAlert').hide();
+        $('#loginSpinner').hide();
+        $('#logoutSpinner').hide();
     });
 
     $scope.checkSession = function(){
@@ -50,6 +52,7 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     }
 
     $scope.login = function(){
+        $('#loginSpinner').show();
         var data = {
             staff_id: $scope.staff_id,
             password: $scope.password
@@ -62,8 +65,10 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         })
         .then(function mySuccess(response) {
             if (response.data.message == 'Access Granted'){
+                $('#loginSpinner').hide();
                 $scope.staff_id = "";
                 $scope.password = "";
+                $()
                 $state.go("main", null, {
                     location: 'replace'
                 });
@@ -78,7 +83,8 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     }
 
     $scope.logout = function(){
-        
+        $('#logoutSpinner').show();
+        $('#logoutIcon').hide();
         $http({
             method : "GET",
             url : $rootScope.url + "/api/user/logout-user.php",
@@ -86,6 +92,8 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         })
         .then(function mySuccess(response) {
             if (response.data.message == "Success"){
+                $('#logoutSpinner').hide();
+                $('#logoutIcon').show();
                 $state.go("login", null, {
                     location: 'replace'
                 });

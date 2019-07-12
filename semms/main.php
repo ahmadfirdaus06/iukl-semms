@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="my-auto ml-4 mr-3">
-                    <button class="my-auto btn btn-danger text-white btn-md p-3" ng-click="logout()" data-toggle="tooltip" title="Sign out"><i class="fas fa-sign-out-alt"></i></button>
+                    <button class="my-auto btn btn-danger text-white btn-md p-3" ng-click="logout()" data-toggle="tooltip" title="Sign out"><div class="row justify-content-center"><i id="logoutIcon" class="fas fa-sign-out-alt my-auto"></i><div id="logoutSpinner" class="spinner-border spinner-border-sm text-white my-auto"></div></div></button>
                 </div>
             </div>
         </div>

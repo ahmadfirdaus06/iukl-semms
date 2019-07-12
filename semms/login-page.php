@@ -23,7 +23,7 @@
 					</div>
 				</div>
 				<div class= "modal-footer">
-					<button class="btn btn-block btn-lg btn-dark" ng-click="login()"><strong>Login</strong></button>
+					<button style="margin:0 auto; float:none" class="btn btn-block btn-lg btn-dark" ng-click="login()"><div class="row justify-content-center"><span class="my-auto col-2"><strong>Login</strong></span><div id="loginSpinner" class="spinner-border text-white my-auto"></div></div></button>
 				</div>
 			</form>
 		</div>
