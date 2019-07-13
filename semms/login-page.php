@@ -1,4 +1,4 @@
-<div ng-app="semms" ng-init="checkSession()"  class=" bg-dark container-fluid m-0" style="height:100%">
+<div ng-app="semms" ng-init="initDOMLogin(); checkSession()"  class=" bg-dark container-fluid m-0" style="height:100%">
 </div>
 <!-- Login Modal -->
 <div ng-controller="userCtrl" class="modal fade" id="loginModal" data-backdrop="false" data-keyboard="false">
@@ -8,7 +8,7 @@
 			<div class="modal-header">
 				<h4 style="margin:0 auto"><strong>IUKL SEMMS</strong></h4>
 			</div>
-			<form>
+			<form ng-submit="login()">
 				<div class="modal-body">
 					<div class="form-group">
 						<label for="staff_id"><strong>ID</strong></label>
@@ -23,7 +23,7 @@
 					</div>
 				</div>
 				<div class= "modal-footer">
-					<button style="margin:0 auto; float:none" class="btn btn-block btn-lg btn-dark" ng-click="login()"><div class="row justify-content-center"><span class="my-auto col-2"><strong>Login</strong></span><div id="loginSpinner" class="spinner-border text-white my-auto"></div></div></button>
+					<button style="margin:0 auto; float:none" type="submit" class="btn btn-block btn-lg btn-dark"><div class="row justify-content-center"><span class="my-auto col-2"><strong>Login</strong></span><div id="loginSpinner" class="spinner-border text-white my-auto"></div></div></button>
 				</div>
 			</form>
 		</div>

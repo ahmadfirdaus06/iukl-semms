@@ -1,8 +1,9 @@
 <?php
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: application/json');
+    header('Access-Control-Allow-Methods: POST');
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
-
+    
     include_once '../../config/Database.php';
     include_once '../../model/User.php';
 
@@ -14,6 +15,7 @@
 
     if (!is_null($data)){
         $user->user_id = $data->user_id;
+        
         $result = $user->readById();
     }
     else{
@@ -38,7 +40,8 @@
                 'user_type' => $user_type,
                 'created_date' => $created_date,
                 'modified_date' => $modified_date,
-                'last_login' => $last_login
+                'last_login' => $last_login,
+                'granted_access' => $granted_access
             );
 
             array_push($user_arr['data'], $user_attr);

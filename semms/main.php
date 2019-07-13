@@ -1,4 +1,4 @@
-<div ng-init="checkSession(); getSession()" class="container-fluid p-0">
+<div ng-init="initDOMMain(); checkSession(); getSession()" class="container-fluid p-0">
     <div class="panel-default">
         <div id="header" class="panel-heading p-3 bg-secondary" style="height:15%">
             <div class="row" style="height:100%" >
@@ -17,6 +17,70 @@
             </div>
         </div>
         <div style="height:85%" class="bg-dark panel-body p-3"><div ui-view></div></div>
+        <!-- <div style="height:8%; font-size:10pt" class="bg-secondary panel-footer text-center text-white pt-2">
+            Copyright &copy; <b>2019 Student Exam Misconduct Unit.</b> All rights reserved.
+        </div> -->
     </div>
 </div>
-<div ng-include="'modal.php'"></div>
+<!-- Edit Profile Modal -->
+<div ng-controller="userCtrl" class="modal fade" id="editProfileModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-centered" >
+		<div class="modal-content">
+			<div class="modal-header bg-info text-white">
+				<h4><strong>Edit My Profile</strong></h4>
+				<button type="button" class="close btn btn-link" data-dismiss="modal">&times;</button>
+			</div>
+			<form ng-submit="saveEditProfile(edit)">
+				<div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="name"><strong>Name</strong></label>
+                                <input type="text" class="form-control" ng-model="edit.name" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><strong>Email</strong></label>
+                                <input type="email" class="form-control" ng-model="edit.email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_no"><strong>Contact Number</strong></label>
+                                <input type="text" class="form-control" ng-model="edit.contact_no" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="registered_by"><strong>Registered By</strong></label>
+                                <input type="text" class="form-control" ng-model="edit.created_date" readonly>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="last_login"><strong>Last Logged In</strong></label>
+                                <input type="text" class="form-control" ng-model="edit.last_login" readonly>
+                            </div>
+                            <hr>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="change_password1" ng-model="edit.change_password">
+                                <label class="custom-control-label" for="change_password1">  Change Password</label>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="new_password"><strong>New Password</strong></label>
+                                <input type="password" class="form-control" ng-model="edit.new_password" ng-disabled="!edit.change_password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm_password"><strong>Confirm Password</strong></label>
+                                <input type="password" class="form-control" ng-model="edit.confirm_password" ng-disabled="!edit.new_password || !edit.change_password" required>
+                            </div>
+                            <div id="confirmPasswordAlert1" class="alert alert-warning" role="alert">
+                                Password do not match!
+                            </div>
+                        </div>
+                    </div>
+				</div>
+				<div class= "modal-footer">
+                <button class="btn btn-success" type="submit"><strong><i class="fas fa-check"></i> Save</strong></button>
+					<button class="btn btn-danger" data-dismiss="modal"><strong><i class="fas fa-times"></i> Close</strong></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

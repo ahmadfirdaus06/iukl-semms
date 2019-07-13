@@ -1,11 +1,22 @@
 var app = angular.module('user', []);
 app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $location, $state, $rootScope){
-    angular.element(document).ready(function(){
+
+    // angular.element(document).ready(function(){
+    //     $('#loginAlert').hide();
+    //     $('#confirmPasswordAlert').hide();
+    //     $('#loginSpinner').hide();
+    //     $('#logoutSpinner').hide();
+    // });
+
+    $scope.initDOMLogin = function(){
         $('#loginAlert').hide();
-        $('#confirmPasswordAlert').hide();
         $('#loginSpinner').hide();
+    };
+
+    $scope.initDOMMain = function(){
+        $('#confirmPasswordAlert1').hide();
         $('#logoutSpinner').hide();
-    });
+    };
 
     $scope.checkSession = function(){
         $("#loginModal").modal('show');
@@ -74,10 +85,12 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                 });
             }
             else if (response.data.message == 'Access Denied'){
+                $('#loginSpinner').hide();
                 $('#loginAlert').show();
             }
         }, 
         function myError(response) {
+            $('#loginSpinner').hide();
                 // console.log(JSON.stringify(response));
           });
     }
@@ -125,59 +138,73 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     $scope.saveEditProfile = function(edit){
         if (edit.change_password && edit.new_password != undefined && edit.confirm_password != undefined){
             if (edit.confirm_password != edit.new_password){
-                $('#confirmPasswordAlert').show();
+                $('#confirmPasswordAlert1').show();
             }
             else{
-                $('#confirmPasswordAlert').hide();
+                $('#confirmPasswordAlert1').hide();
 
             }
         }
-        bootbox.confirm({
-            message: "Are you sure you want to update your profile?",
-            buttons: {
-                confirm: {
-                    label: 'Yes',
-                    className: 'btn-success'
+        if (!$("#confirmPasswordAlert1").is(":visible")){
+            bootbox.confirm({
+                message: "Are you sure you want to update your profile?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
                 },
-                cancel: {
-                    label: 'No',
-                    className: 'btn-danger'
-                }
-            },
-            callback: function (result) {
-                if(result){
-                    var data = {
-                        user_id: edit.user_id,
-                        name: edit.name,
-                        email: edit.email,
-                        contact_no: edit.contact_no,
-                        password: edit.new_password
-                    };
-            
-                    $http({
-                        method : "PUT",
-                        url : $rootScope.url + "/api/user/update-user-data.php",
-                        data: data,
-                        dataType: "application/json"
-                    })
-                    .then(function mySuccess(response) {
-                        if (response.data.message == "User Data Updated"){
-                            $('#editProfileModal').modal('hide');
+                callback: function (result) {
+                    if(result){
+                        var data = {
+                            user_id: edit.user_id,
+                            name: edit.name,
+                            email: edit.email,
+                            contact_no: edit.contact_no,
+                            password: edit.new_password
+                        };
+                
+                        $http({
+                            method : "PUT",
+                            url : $rootScope.url + "/api/user/update-user-data.php",
+                            data: data,
+                            dataType: "application/json"
+                        })
+                        .then(function mySuccess(response) {
+                            if (response.data.message == "User Data Updated"){
+                                $('#editProfileModal').modal('hide');
+                                var box = bootbox.dialog({
+                                    message: "<strong>Success!</strong>",
+                                    backdrop: false,
+                                    size: 'small'
+                                });
+                                box.find('.modal-content').addClass('text-success border border-success');
+                                box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
+                                setTimeout(function() {
+                                    box.modal('hide');
+                                }, 1000);
+                                $state.reload();
+                            }
+                            else{
+                                var box = bootbox.dialog({
+                                    message: "<strong>Failed! "+ response.data.message +"</strong>",
+                                    backdrop: false,
+                                    size: 'small'
+                                });
+                                box.find('.modal-content').addClass('text-danger border border-danger');
+                                box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
+                                setTimeout(function() {
+                                    box.modal('hide');
+                                }, 1000);
+                            }
+                        }, 
+                        function myError(response) {
                             var box = bootbox.dialog({
-                                message: "<strong>Success!</strong>",
-                                backdrop: false,
-                                size: 'small'
-                            });
-                            box.find('.modal-content').addClass('text-success border border-success');
-                            box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
-                            setTimeout(function() {
-                                box.modal('hide');
-                            }, 1000);
-                            $state.reload();
-                        }
-                        else{
-                            var box = bootbox.dialog({
-                                message: "<strong>Failed! "+ response.data.message +"</strong>",
+                                message: "<strong>Error!</strong>",
                                 backdrop: false,
                                 size: 'small'
                             });
@@ -186,29 +213,11 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                             setTimeout(function() {
                                 box.modal('hide');
                             }, 1000);
-                        }
-                    }, 
-                    function myError(response) {
-                        var box = bootbox.dialog({
-                            message: "<strong>Error!</strong>",
-                            backdrop: false,
-                            size: 'small'
-                        });
-                        box.find('.modal-content').addClass('text-danger border border-danger');
-                        box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
-                        setTimeout(function() {
-                            box.modal('hide');
-                        }, 1000);
-                    });         
+                        });         
+                    }
                 }
-            }
-        });
-    };
-
-    $scope.cancelEditProfile = function(edit){
-        // if (edit.email != $scope.edit.email)
-        $('#editProfileModal').modal('hide');
-        $scope.edit = {};
-        $state.reload();
+            });
+        }
+        
     };
 });

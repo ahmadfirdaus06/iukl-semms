@@ -15,13 +15,21 @@
         public $created_date;
         public $modified_date;
         public $last_login;
+        public $granted_access;
 
         public function __construct($db){
             $this->conn = $db;
         }
 
         public function readAll(){
-            $query = 'SELECT * FROM ' . $this->table . ' ORDER BY created_date DESC';
+
+            session_start();
+            
+            extract($_SESSION['user']);
+
+            $current_user_id = $user_id;
+
+            $query = 'SELECT * FROM ' . $this->table . ' WHERE user_id != ' .$current_user_id. ' ORDER BY created_date DESC';
             
             $stmt = $this->conn->prepare($query);
 
@@ -43,7 +51,7 @@
         }
 
         public function loginWeb(){
-            $query = 'SELECT * FROM ' . $this->table . ' WHERE staff_id = ? AND user_type != "Invigilator" LIMIT 0,1';
+            $query = 'SELECT * FROM ' . $this->table . ' WHERE staff_id = ? AND user_type != "Invigilator" AND granted_access = "yes"  LIMIT 0,1';
 
             $stmt = $this->conn->prepare($query);
 
@@ -104,7 +112,8 @@
             name = IFNULL(:name, name), 
             contact_no = IFNULL(:contact_no, contact_no), 
             user_type = IFNULL(:user_type, user_type),
-            email = IFNULL(:email, email), 
+            email = IFNULL(:email, email),
+            granted_access = IFNULL(:granted_access, granted_access),
             modified_date = :modified_date
             WHERE user_id = :user_id';
 
@@ -134,6 +143,9 @@
             if (!is_null($this->staff_id)){
                 $this->staff_id = htmlspecialchars(strip_tags($this->staff_id));
             }
+            if (!is_null($this->granted_access)){
+                $this->granted_access = htmlspecialchars(strip_tags($this->granted_access));
+            }
 
             // $this->staff_id = htmlspecialchars(strip_tags($this->staff_id));
             // $this->password = password_hash(htmlspecialchars(strip_tags($this->password)), PASSWORD_BCRYPT); //verify using -> password_verify ( string $password , string $hash )
@@ -150,6 +162,7 @@
             $stmt->bindParam(':contact_no', $this->contact_no);
             $stmt->bindParam(':user_type', $this->user_type);
             $stmt->bindParam(':email', $this->email);
+            $stmt->bindParam(':granted_access', $this->granted_access);
             $stmt->bindParam(':modified_date', $this->modified_date);
             $stmt->bindParam(':user_id', $this->user_id);
 

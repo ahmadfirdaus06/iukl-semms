@@ -56,6 +56,12 @@
     else{
         $user->email = NULL;
     }
+    if (array_key_exists("granted_access", $data)){
+        $user->granted_access = $data->granted_access;
+    }
+    else{
+        $user->granted_access = NULL;
+    }
     
     // $user->user_id = $data->user_id;
     // $user->staff_id = $data->staff_id;
