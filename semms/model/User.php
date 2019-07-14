@@ -218,6 +218,17 @@
 
             return false;
         }
-    
+
+        public function checkExisting(){
+            $query = 'SELECT * FROM ' . $this->table . ' WHERE staff_id = ?';
+
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindParam(1, $this->staff_id);
+
+            $stmt->execute();
+
+            return $stmt;
+        }
     }
 ?>

@@ -15,7 +15,7 @@
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
         <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
     </head>
-    <body style="height:100%; width:100%">
+    <body style="height:100%; width:100%; min-height:100%; min-width:50%">
     <div ui-view></div>
     <!-- custom angularjs script -->
     <script src="js\app.js"></script>

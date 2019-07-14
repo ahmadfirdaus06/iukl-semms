@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div style="height:85%" class="bg-dark panel-body p-3"><div ui-view></div></div>
+        <div style="height:85%" class="bg-dark panel-body"><div ui-view></div></div>
         <!-- <div style="height:8%; font-size:10pt" class="bg-secondary panel-footer text-center text-white pt-2">
             Copyright &copy; <b>2019 Student Exam Misconduct Unit.</b> All rights reserved.
         </div> -->
@@ -28,7 +28,7 @@
 		<div class="modal-content">
 			<div class="modal-header bg-info text-white">
 				<h4><strong>Edit My Profile</strong></h4>
-				<button type="button" class="close btn btn-link" data-dismiss="modal">&times;</button>
+				<button type="button" class="close btn btn-link text-white" data-dismiss="modal">&times;</button>
 			</div>
 			<form ng-submit="saveEditProfile(edit)">
 				<div class="modal-body">
@@ -77,8 +77,8 @@
                     </div>
 				</div>
 				<div class= "modal-footer">
-                <button class="btn btn-success" type="submit"><strong><i class="fas fa-check"></i> Save</strong></button>
-					<button class="btn btn-danger" data-dismiss="modal"><strong><i class="fas fa-times"></i> Close</strong></button>
+                    <button class="btn btn-danger" data-dismiss="modal"><strong><i class="fas fa-times"></i> Close</strong></button>
+                    <button class="btn btn-success" type="submit"><strong><i class="fas fa-check"></i> Save</strong></button>
 				</div>
 			</form>
 		</div>

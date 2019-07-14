@@ -1,34 +1,41 @@
-<div class="container-fluid bg-white p-2 card" ng-app="semms" ng-init="initDOMAdmin(); getAllUser()">
+<div class="container-fluid p-3" style="background-color: inherit" ng-app="semms" ng-init="initDOMAdmin(); getAllUser()">
     <input type=hidden ng-model="pageAccess" ng-init="pageAccess='Admin'">
-    <div class="row m-1">
-        <input type="text" class="form-control border border-primary" ng-keyup="searchTable(text)" ng-model="text" style="width:30%" placeholder="Search user....">
-        <button class="btn btn-primary ml-auto" title="Add New User"data-target="#addNewUserModal" data-toggle="modal"><i class="fas fa-user-plus"></i> New User</button>
+    <div class="container-fluid">
+        <div class="row justify-content-between">
+            <div class="p-0 col my-auto">
+                <input type="text" class="form-control border border-secondary" ng-keyup="searchTable(text)" ng-model="text" style="width:25%" placeholder="Search user....">
+            </div>
+            <div class="p-0 row mr-1">
+                <button class="my-auto btn btn-primary" title="Add New User"data-target="#addNewUserModal" data-toggle="modal"><i class="fas fa-user-plus"></i> New User</button>
+                <p class="my-auto ml-2 mr-auto text-white">Total Users: {{totalUser}}</p>
+            </div>
+        </div>
     </div>
-    <div id="loading" style="margin:0 auto" class="spinner-border text-primary my-auto"></div>  
-    <table
-    id="userTable"
-    class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Name</th>
-                <th>Staff ID</th>
-                <th>Access Type</th>
-                <th>Registered By</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="user in allUser">
-                <td>{{$index+1}}</td>
-                <td>{{user.name}}</td>
-                <td>{{user.staff_id}}</td>
-                <td>{{user.user_type}}</td>
-                <td>{{user.created_date | date: 'medium'}}</td>
-                <td style="text-align:center"><button data-toggle="tooltip" title="Edit User Data" ng-click="openEditUserDataModal(user)" class="btn btn-primary"><i class="fas fa-user-edit"></i></button></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container-fluid bg-white card p-3 mt-3">
+        <div id="loading" style="margin:0 auto" class="spinner-border text-primary my-auto"></div> 
+        <table id="userTable" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Staff ID</th>
+                    <th>Access Type</th>
+                    <th>Registered By</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in allUser">
+                    <td>{{$index+1}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.staff_id}}</td>
+                    <td>{{user.user_type}}</td>
+                    <td>{{user.created_date | date: 'medium'}}</td>
+                    <td style="text-align:center"><button data-toggle="tooltip" title="Edit User Data" ng-click="openEditUserDataModal(user)" class="btn btn-primary"><i class="fas fa-user-edit"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <!-- Edit User Data Modal -->
 <div ng-controller="adminCtrl" class="modal fade" id="editUserDataModal" data-backdrop="static" data-keyboard="false">
@@ -36,7 +43,7 @@
 		<div class="modal-content">
 			<div class="modal-header bg-primary text-white">
 				<h4><strong>Edit User</strong></h4>
-				<button type="button" class="close btn btn-link" data-dismiss="modal">&times;</button>
+				<button type="button" class="close btn btn-link text-white" data-dismiss="modal">&times;</button>
 			</div>
 			<form ng-submit="saveEditUserData(edit)">
 				<div class="modal-body">
@@ -105,9 +112,9 @@
                     </div>
 				</div>
 				<div class= "modal-footer">
-                    <button class="btn btn-warning text-white" type="button"><strong><i class="fas fa-exclamation-triangle"></i> Remove User</strong></button>
-					<button class="btn btn-success" type="submit"><strong><i class="fas fa-check"></i> Save</strong></button>
+                    <button class="btn btn-warning text-white" ng-click="removeUser(edit)" type="button"><strong><i class="fas fa-exclamation-triangle"></i> Remove User</strong></button>
 					<button class="btn btn-danger" data-dismiss="modal"><strong><i class="fas fa-times"></i> Close</strong></button>
+                    <button class="btn btn-success" type="submit"><strong><i class="fas fa-check"></i> Save</strong></button>
 				</div>
 			</form>
 		</div>
@@ -119,33 +126,37 @@
 		<div class="modal-content">
 			<div class="modal-header bg-primary text-white">
 				<h4><strong>Register User</strong></h4>
-				<button type="button" class="close btn btn-link" data-dismiss="modal">&times;</button>
+				<button type="button" class="close btn btn-link text-white" ng-click="cancelRegisterUser(new)">&times;</button>
 			</div>
-			<form ng-submit="">
+			<form id="addNewUserModalForm" ng-submit="registerUser(new)">
 				<div class="modal-body">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="staff_id"><strong>Staff ID</strong></label>
-                                <input type="text" class="form-control" ng-model="new.staff_id" required>
+                                <input type="text" class="form-control" placeholder="Enter user staff id..." ng-keyup="checkExistingId(new.staff_id)" ng-model="new.staff_id" required>
+                            </div>
+                            <div id="existedIdAlert" class="alert alert-warning" role="alert">
+                                Staff ID already taken!
                             </div>
                             <div class="form-group">
                                 <label for="name"><strong>Name</strong></label>
-                                <input type="text" class="form-control" ng-model="new.name" required>
+                                <input type="text" class="form-control" placeholder="Enter user name..." ng-model="new.name" required>
                             </div>
                             <div class="form-group">
                                 <label for="email"><strong>Email</strong></label>
-                                <input type="email" class="form-control" ng-model="new.email" required>
+                                <input type="email" class="form-control" placeholder="Enter user email..." ng-model="new.email" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="contact_no"><strong>Contact Number</strong></label>
-                                <input type="text" class="form-control" ng-model="new.contact_no" required>
+                                <input type="text" class="form-control" placeholder="Enter user contact number..." ng-model="new.contact_no" required>
                             </div>
                             <div class="form-group">
                                 <label for="user_type"><strong>Access</strong></label>
                                 <select class="form-control" ng-model="new.user_type" required>
+                                    <option value="">Select a user access</option>
                                     <option>Admin</option>
                                     <option>Bursary Admin</option>
                                     <option>Counselor</option>
@@ -156,8 +167,8 @@
                     </div>
 				</div>
 				<div class= "modal-footer">
+                    <button class="btn btn-danger" type="button" ng-click="cancelRegisterUser(new)"><strong><i class="fas fa-times"></i> Close</strong></button>
                     <button class="btn btn-success" type="submit"><strong><i class="fas fa-check"></i> Save</strong></button>
-					<button class="btn btn-danger" data-dismiss="modal"><strong><i class="fas fa-times"></i> Close</strong></button>
 				</div>
 			</form>
 		</div>
