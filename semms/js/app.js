@@ -45,6 +45,8 @@ app.config(function($stateProvider, $urlRouterProvider){
 
 app.run(function($rootScope) {
     
-    $rootScope.url = "http://localhost:8080/iukl-semms/semms";
-    // $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
+    // $rootScope.url = "http://localhost:8080/iukl-semms/semms";
+    $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
+
+    $rootScope.button = false;
   });

@@ -62,6 +62,7 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
     };
 
     $scope.openEditUserDataModal = function(user){
+        $rootScope.button = true;
         var data = {
             user_id: user.user_id
         };
@@ -75,12 +76,14 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
             if (response.data.data != ""){
                 $scope.edit = response.data.data[0];
                 $('#editUserDataModal').modal('show');
+                $rootScope.button = false;
             }
             
             
         }, 
         function myError(response) {
             // console.log(response);
+            $rootScope.button = false;
         });
         
     };

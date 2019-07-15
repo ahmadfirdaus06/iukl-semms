@@ -31,7 +31,7 @@
                     <td>{{user.staff_id}}</td>
                     <td>{{user.user_type}}</td>
                     <td>{{user.created_date | date: 'medium'}}</td>
-                    <td style="text-align:center"><button data-toggle="tooltip" title="Edit User Data" ng-click="openEditUserDataModal(user)" class="btn btn-primary"><i class="fas fa-user-edit"></i></button></td>
+                    <td style="text-align:center"><button data-toggle="tooltip" ng-disabled="button" title="Edit User Data" ng-click="openEditUserDataModal(user)" class="btn btn-primary"><i class="fas fa-user-edit"></i></button></td>
                 </tr>
             </tbody>
         </table>
