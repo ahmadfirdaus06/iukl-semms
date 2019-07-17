@@ -12,7 +12,10 @@
         </div>
     </div>
     <div class="container-fluid bg-white card p-3 mt-3">
-        <div id="loading" style="margin:0 auto" class="spinner-border text-primary my-auto"></div> 
+        <div id="loading" class="row justify-content-center text-dark">
+            <div class="spinner-border spinner-border-sm my-auto"></div> 
+            <h4 class="my-auto ml-3">Loading....</h4>
+        </div>
         <table id="userTable" class="table table-bordered table-hover">
             <thead>
                 <tr>

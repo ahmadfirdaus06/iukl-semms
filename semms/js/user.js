@@ -9,7 +9,7 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     $scope.initDOMMain = function(){
         $('#confirmPasswordAlert1').hide();
         $('#logoutSpinner').hide();
-        $('#saveSpinner').hide();
+        $('#editProfileModal #saveSpinner').hide();
     };
 
     $scope.checkSession = function(){
@@ -154,8 +154,8 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                 },
                 callback: function (result) {
                     if(result){
-                        $('#saveSpinner').show();
-                        $('#saveIcon').hide();
+                        $('#editProfileModal #saveSpinner').show();
+                        $('#editProfileModal #saveIcon').hide();
                         var data = {
                             user_id: edit.user_id,
                             name: edit.name,
@@ -172,8 +172,8 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                         })
                         .then(function mySuccess(response) {
                             if (response.data.message == "User Data Updated"){
-                                $('#saveSpinner').hide();
-                                $('#saveIcon').show();
+                                $('#editProfileModal #saveSpinner').hide();
+                                $('#editProfileModal #saveIcon').show();
                                 $('#editProfileModal').modal('hide');
                                 var box = bootbox.dialog({
                                     message: "<strong>Success!</strong>",
@@ -188,8 +188,8 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                                 $state.reload();
                             }
                             else{
-                                $('#saveSpinner').hide();
-                                $('#saveIcon').show();
+                                $('#editProfileModal #saveSpinner').hide();
+                                $('#editProfileModal #saveIcon').show();
                                 var box = bootbox.dialog({
                                     message: "<strong>Failed! "+ response.data.message +"</strong>",
                                     backdrop: false,
@@ -203,8 +203,8 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                             }
                         }, 
                         function myError(response) {
-                            $('#saveSpinner').hide();
-                            $('#saveIcon').show();
+                            $('#editProfileModal #saveSpinner').hide();
+                            $('#editProfileModal #saveIcon').show();
                             var box = bootbox.dialog({
                                 message: "<strong>Error!</strong>",
                                 backdrop: false,
