@@ -78,7 +78,10 @@
 				</div>
 				<div class= "modal-footer">
                     <button class="btn btn-danger" data-dismiss="modal"><strong><i class="fas fa-times"></i> Close</strong></button>
-                    <button class="btn btn-success" type="submit"><strong><i class="fas fa-check"></i> Save</strong></button>
+                    <button class="btn btn-success" type="submit">
+                        <div id="saveSpinner" class="spinner-border spinner-border-sm text-white"></div>
+                        <strong ><i id="saveIcon" class="fas fa-check"></i> Save</strong>
+                    </button>
 				</div>
 			</form>
 		</div>

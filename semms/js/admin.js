@@ -1,10 +1,5 @@
 var app = angular.module('admin', []);
 app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $location, $rootScope, $state){
-
-    // angular.element(document).ready(function () {     
-    //     $('#userTable').hide();
-    //     $('#confirmPasswordAlert').hide();
-    // });
     
     var table;
 
@@ -12,6 +7,9 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
         $('#userTable').hide();
         $('#confirmPasswordAlert2').hide();
         $('#existedIdAlert').hide();
+        $('#deleteSpinner').hide();
+        $('#editUserDataModal #saveSpinner').hide();
+        $('#addNewUserModal #saveSpinner').hide();
     };
 
     $scope.pageAccess = "Admin";
@@ -62,7 +60,7 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
     };
 
     $scope.openEditUserDataModal = function(user){
-        $rootScope.button = true;
+        $('#loadingModal').modal('show');
         var data = {
             user_id: user.user_id
         };
@@ -74,12 +72,14 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
         })
         .then(function mySuccess(response) {
             if (response.data.data != ""){
+                setTimeout(function(){
+                    $('#loadingModal').modal('hide');
+                }, 500);
                 $scope.edit = response.data.data[0];
-                $('#editUserDataModal').modal('show');
-                $rootScope.button = false;
+                $("#loadingModal").on("hidden.bs.modal", function () {
+                    $('#editUserDataModal').modal('show');
+                });
             }
-            
-            
         }, 
         function myError(response) {
             // console.log(response);
@@ -113,6 +113,8 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                 },
                 callback: function (result) {
                     if(result){
+                        $('#editUserDataModal #saveSpinner').show();
+                        $('#editUserDataModal #saveIcon').hide();
                         var data = {
                             user_id: edit.user_id,
                             name: edit.name,
@@ -132,13 +134,15 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                         })
                         .then(function mySuccess(response) {
                             if (response.data.message == "User Data Updated"){
+                                $('#editUserDataModal #saveSpinner').hide();
+                                $('#editUserDataModal #saveIcon').show();
                                 $('#editUserDataModal').modal('hide');
                                 var box = bootbox.dialog({
                                     message: "<strong>Success!</strong>",
                                     backdrop: false,
                                     size: 'small'
                                 });
-                                box.find('.modal-content').addClass('text-success border border-success');
+                                box.find('.modal-content').addClass('text-white bg-success');
                                 box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
                                 setTimeout(function() {
                                     box.modal('hide');
@@ -146,12 +150,14 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                                 $state.reload();
                             }
                             else{
+                                $('#editUserDataModal #saveSpinner').hide();
+                                $('#editUserDataModal #saveIcon').show();
                                 var box = bootbox.dialog({
                                     message: "<strong>Failed! "+ response.data.message +"</strong>",
                                     backdrop: false,
                                     size: 'small'
                                 });
-                                box.find('.modal-content').addClass('text-danger border border-danger');
+                                box.find('.modal-content').addClass('text-white bg-danger');
                                 box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
                                 setTimeout(function() {
                                     box.modal('hide');
@@ -159,12 +165,14 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                             }
                         }, 
                         function myError(response) {
+                            $('#editUserDataModal #saveSpinner').hide();
+                            $('#editUserDataModal #saveIcon').show();
                             var box = bootbox.dialog({
                                 message: "<strong>Error!</strong>",
                                 backdrop: false,
                                 size: 'small'
                             });
-                            box.find('.modal-content').addClass('text-danger border border-danger');
+                            box.find('.modal-content').addClass('text-white bg-danger');
                             box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
                             setTimeout(function() {
                                 box.modal('hide');
@@ -228,6 +236,8 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                     }
                 },
                 callback: function (result) {
+                    $('#addNewUserModal #saveSpinner').show();
+                    $('#addNewUserModal #saveIcon').hide();
                     if (result){
                         var data = {
                             staff_id: user.staff_id,
@@ -245,24 +255,28 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                         })
                         .then(function mySuccess(response) {
                             if (response.data.message == "User Created"){
+                                $('#addNewUserModal #saveSpinner').hide();
+                                $('#addNewUserModal #saveIcon').show();
                                 $('#addNewUserModal').modal('hide');
                                     var box = bootbox.dialog({
                                         message: "<strong>Success!</strong><br>Instruct user to login and change the default password => 123",
                                         backdrop: false,
                                     });
-                                    box.find('.modal-content').addClass('text-success border border-success');
+                                    box.find('.modal-content').addClass('text-white bg-success');
                                     setTimeout(function() {
                                         box.modal('hide');
                                     }, 5000);
                                     $state.reload();
                             }
                             else{
+                                $('#addNewUserModal #saveSpinner').hide();
+                                $('#addNewUserModal #saveIcon').show();
                                 var box = bootbox.dialog({
                                     message: "<strong>Failed! "+ response.data.message +"</strong>",
                                     backdrop: false,
                                     size: 'small'
                                 });
-                                box.find('.modal-content').addClass('text-danger border border-danger');
+                                box.find('.modal-content').addClass('text-white bg-danger');
                                 box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
                                 setTimeout(function() {
                                     box.modal('hide');
@@ -271,12 +285,14 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                         }, 
                         function myError(response) {
                             // console.log(response);
+                            $('#addNewUserModal #saveSpinner').hide();
+                            $('#addNewUserModal #saveIcon').show();
                             var box = bootbox.dialog({
                                 message: "<strong>Error! "+ response.data.message +"</strong>",
                                 backdrop: false,
                                 size: 'small'
                             });
-                            box.find('.modal-content').addClass('text-danger border border-danger');
+                            box.find('.modal-content').addClass('text-white bg-danger');
                             box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
                             setTimeout(function() {
                                 box.modal('hide');
@@ -337,6 +353,8 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
             },
             callback: function (result) {
                 if (result){
+                    $('#deleteSpinner').show();
+                    $('#deleteIcon').hide();
                     var data = {
                         user_id: user.user_id
                     };
@@ -349,13 +367,15 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                     })
                     .then(function mySuccess(response) {
                         if (response.data.message == "User Deleted"){
+                            $('#deleteSpinner').hide();
+                            $('#deleteIcon').show();
                             $('#editUserDataModal').modal('hide');
                                 var box = bootbox.dialog({
                                     message: "<strong>Success!</strong>",
                                     backdrop: false,
                                     size: 'small'
                                 });
-                                box.find('.modal-content').addClass('text-success border border-success');
+                                box.find('.modal-content').addClass('text-white bg-success');
                                 box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
                                 setTimeout(function() {
                                     box.modal('hide');
@@ -363,12 +383,14 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                                 $state.reload();
                         }
                         else{
+                            $('#deleteSpinner').hide();
+                            $('#deleteIcon').show();
                             var box = bootbox.dialog({
                                 message: "<strong>Failed! "+ response.data.message +"</strong>",
                                 backdrop: false,
                                 size: 'small'
                             });
-                            box.find('.modal-content').addClass('text-danger border border-danger');
+                            box.find('.modal-content').addClass('text-white bg-danger');
                             box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
                             setTimeout(function() {
                                 box.modal('hide');
@@ -376,12 +398,14 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                         }
                     }, 
                     function myError(response) {
+                        $('#deleteSpinner').hide();
+                        $('#deleteIcon').show();
                         var box = bootbox.dialog({
                             message: "<strong>Error! "+ response.data.message +"</strong>",
                             backdrop: false,
                             size: 'small'
                         });
-                        box.find('.modal-content').addClass('text-danger border border-danger');
+                        box.find('.modal-content').addClass('text-white bg-danger');
                         box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
                         setTimeout(function() {
                             box.modal('hide');

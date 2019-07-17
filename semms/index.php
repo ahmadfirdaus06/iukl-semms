@@ -25,3 +25,16 @@
     <script src="js\counselor.js"></script>
     </body>
 </HTML>
+<!-- Loading Modal -->
+<div class="modal" id="loadingModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered" >
+		<div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="row text-dark justify-content-center">
+                    <div class="spinner-border spinner-border-sm my-auto"></div>
+                    <span class="ml-3 my-auto">Loading....</span>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>

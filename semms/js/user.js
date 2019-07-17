@@ -1,13 +1,6 @@
 var app = angular.module('user', []);
 app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $location, $state, $rootScope){
 
-    // angular.element(document).ready(function(){
-    //     $('#loginAlert').hide();
-    //     $('#confirmPasswordAlert').hide();
-    //     $('#loginSpinner').hide();
-    //     $('#logoutSpinner').hide();
-    // });
-
     $scope.initDOMLogin = function(){
         $('#loginAlert').hide();
         $('#loginSpinner').hide();
@@ -16,6 +9,7 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     $scope.initDOMMain = function(){
         $('#confirmPasswordAlert1').hide();
         $('#logoutSpinner').hide();
+        $('#saveSpinner').hide();
     };
 
     $scope.checkSession = function(){
@@ -160,6 +154,8 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                 },
                 callback: function (result) {
                     if(result){
+                        $('#saveSpinner').show();
+                        $('#saveIcon').hide();
                         var data = {
                             user_id: edit.user_id,
                             name: edit.name,
@@ -176,13 +172,15 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                         })
                         .then(function mySuccess(response) {
                             if (response.data.message == "User Data Updated"){
+                                $('#saveSpinner').hide();
+                                $('#saveIcon').show();
                                 $('#editProfileModal').modal('hide');
                                 var box = bootbox.dialog({
                                     message: "<strong>Success!</strong>",
                                     backdrop: false,
                                     size: 'small'
                                 });
-                                box.find('.modal-content').addClass('text-success border border-success');
+                                box.find('.modal-content').addClass('text-white bg-success');
                                 box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
                                 setTimeout(function() {
                                     box.modal('hide');
@@ -190,12 +188,14 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                                 $state.reload();
                             }
                             else{
+                                $('#saveSpinner').hide();
+                                $('#saveIcon').show();
                                 var box = bootbox.dialog({
                                     message: "<strong>Failed! "+ response.data.message +"</strong>",
                                     backdrop: false,
                                     size: 'small'
                                 });
-                                box.find('.modal-content').addClass('text-danger border border-danger');
+                                box.find('.modal-content').addClass('text-white bg-danger');
                                 box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
                                 setTimeout(function() {
                                     box.modal('hide');
@@ -203,12 +203,14 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                             }
                         }, 
                         function myError(response) {
+                            $('#saveSpinner').hide();
+                            $('#saveIcon').show();
                             var box = bootbox.dialog({
                                 message: "<strong>Error!</strong>",
                                 backdrop: false,
                                 size: 'small'
                             });
-                            box.find('.modal-content').addClass('text-danger border border-danger');
+                            box.find('.modal-content').addClass('text-white bg-danger');
                             box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
                             setTimeout(function() {
                                 box.modal('hide');

@@ -31,7 +31,7 @@
                     <td>{{user.staff_id}}</td>
                     <td>{{user.user_type}}</td>
                     <td>{{user.created_date | date: 'medium'}}</td>
-                    <td style="text-align:center"><button data-toggle="tooltip" ng-disabled="button" title="Edit User Data" ng-click="openEditUserDataModal(user)" class="btn btn-primary"><i class="fas fa-user-edit"></i></button></td>
+                    <td style="text-align:center"><button data-toggle="tooltip" title="Edit User Data" ng-click="openEditUserDataModal(user)" class="btn btn-primary"><i class="fas fa-user-edit"></i></button></td>
                 </tr>
             </tbody>
         </table>
@@ -112,9 +112,15 @@
                     </div>
 				</div>
 				<div class= "modal-footer">
-                    <button class="btn btn-warning text-white" ng-click="removeUser(edit)" type="button"><strong><i class="fas fa-exclamation-triangle"></i> Remove User</strong></button>
+                    <button class="btn btn-warning text-white" ng-click="removeUser(edit)" type="button">
+                        <div id="deleteSpinner" class="spinner-border spinner-border-sm text-white"></div>
+                        <strong><i id="deleteIcon" class="fas fa-exclamation-triangle"></i> Remove User</strong>
+                        </button>
 					<button class="btn btn-danger" data-dismiss="modal"><strong><i class="fas fa-times"></i> Close</strong></button>
-                    <button class="btn btn-success" type="submit"><strong><i class="fas fa-check"></i> Save</strong></button>
+                    <button class="btn btn-success" type="submit">
+                        <div id="saveSpinner" class="spinner-border spinner-border-sm text-white"></div>
+                        <strong ><i id="saveIcon" class="fas fa-check"></i> Save</strong>
+                    </button>
 				</div>
 			</form>
 		</div>
@@ -168,7 +174,10 @@
 				</div>
 				<div class= "modal-footer">
                     <button class="btn btn-danger" type="button" ng-click="cancelRegisterUser(new)"><strong><i class="fas fa-times"></i> Close</strong></button>
-                    <button class="btn btn-success" type="submit"><strong><i class="fas fa-check"></i> Save</strong></button>
+                    <button class="btn btn-success" type="submit">
+                        <div id="saveSpinner" class="spinner-border spinner-border-sm text-white"></div>
+                        <strong ><i id="saveIcon" class="fas fa-check"></i> Save</strong>
+                    </button>
 				</div>
 			</form>
 		</div>
