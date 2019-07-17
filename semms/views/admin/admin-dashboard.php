@@ -14,7 +14,7 @@
     <div class="container-fluid bg-white card p-3 mt-3">
         <div id="loading" class="row justify-content-center text-dark">
             <div class="spinner-border spinner-border-sm my-auto"></div> 
-            <h4 class="my-auto ml-3">Loading....</h4>
+            <span class="my-auto ml-3">Loading....</span>
         </div>
         <table id="userTable" class="table table-bordered table-hover">
             <thead>
