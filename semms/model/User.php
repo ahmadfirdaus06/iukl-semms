@@ -50,6 +50,18 @@
             return $stmt;
         }
 
+        public function readByStaffId(){
+            $query = 'SELECT * FROM ' . $this->table . ' WHERE staff_id = ? LIMIT 0,1';
+
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindParam(1, $this->staff_id);
+
+            $stmt->execute();
+
+            return $stmt;
+        }
+
         public function loginWeb(){
             $query = 'SELECT * FROM ' . $this->table . ' WHERE staff_id = ? AND user_type != "Invigilator" AND granted_access = "yes"  LIMIT 0,1';
 
