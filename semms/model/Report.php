@@ -72,7 +72,7 @@
             witness1_email = :witness1_email,
             witness2_name = :witness2_name,
             witness2_contact_no = :witness2_contact_no,
-            witness2_email = :repowitness2_emailrter_id';
+            witness2_email = :witness2_email';
             
             $stmt = $this->conn->prepare($query);
 
@@ -113,12 +113,12 @@
             $stmt->bindParam(':witness2_email', $this->witness2_email);
 
             if($stmt->execute()) {
-                return true;
+                return $this->conn->lastInsertId();
             }
 
             printf("Error: %s.\n", $stmt->error);
 
-            return false;
+            return '';
         }
 
         public function approveReport(){
