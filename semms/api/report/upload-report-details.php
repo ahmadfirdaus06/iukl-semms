@@ -32,8 +32,8 @@
     $report->witness2_contact_no = $data->witness2_contact_no;
     $report->witness2_email = $data->witness2_email;
 
-    if(!is_null($user->create())) {
-        $report_id = $user->create();
+    if(!is_null($report->create())) {
+        $report_id = $report->create();
         echo json_encode(
             array(
                 'message' => 'Success',
