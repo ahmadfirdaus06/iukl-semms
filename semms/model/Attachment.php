@@ -1,5 +1,5 @@
 <?php
-    class Report{
+    class Attachment{
         //db 
         private $conn;
         private $table = 'attachment';

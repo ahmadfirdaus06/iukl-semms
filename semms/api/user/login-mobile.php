@@ -40,7 +40,7 @@
                     'modified_date' => $modified_date,
                     'last_login' => $last_login
                 );
-
+                $_SESSION['user'] = $user_attr;
                 array_push($user_arr['data'], $user_attr);
                 $user_arr['message'] = 'Access Granted!';
                 echo json_encode($user_arr);

@@ -20,7 +20,7 @@
     $total = count($img_paths);
 
     foreach($img_paths as $path){
-        $attachment->path = $path;
+        $attachment->path = str_replace('\/','/',$path);
         if ($attachment->create()){
             $count++;
         }
@@ -29,7 +29,7 @@
         $conn = $db;
         $report_id = $attachment->report_id;
         $table = 'report';
-        $query = 'UPDATE ' . $this->table . '
+        $query = 'UPDATE ' . $table . '
             SET 
             is_valid = IFNULL(:is_valid, is_valid)
             WHERE report_id = :report_id';
@@ -43,7 +43,9 @@
 
             if($stmt->execute()) {
                 echo json_encode(
-                    array('message' => 'Success')
+                    array(
+                        'message' => 'Success',
+                        'report_id' => $report_id)
                 );
             }
             else{
