@@ -62,6 +62,16 @@
             return $stmt;
         }
 
+        public function readAllAnon(){
+            $query = 'SELECT * FROM ' . $this->table;
+
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->execute();
+
+            return $stmt;
+        }
+
         public function loginWeb(){
             $query = 'SELECT * FROM ' . $this->table . ' WHERE staff_id = ? AND user_type != "Invigilator" AND granted_access = "yes"  LIMIT 0,1';
 
@@ -159,14 +169,7 @@
                 $this->granted_access = htmlspecialchars(strip_tags($this->granted_access));
             }
 
-            // $this->staff_id = htmlspecialchars(strip_tags($this->staff_id));
-            // $this->password = password_hash(htmlspecialchars(strip_tags($this->password)), PASSWORD_BCRYPT); //verify using -> password_verify ( string $password , string $hash )
-            // $this->name = htmlspecialchars(strip_tags($this->name));
-            // $this->contact_no = htmlspecialchars(strip_tags($this->contact_no));
-            // $this->user_type = htmlspecialchars(strip_tags($this->user_type));
-            // $this->email = htmlspecialchars(strip_tags($this->email));
             $this->modified_date = date("Y-m-d H:i:s"); 
-            // $this->user_id = htmlspecialchars(strip_tags($this->user_id));
 
             $stmt->bindParam(':staff_id', $this->staff_id);
             $stmt->bindParam(':password', $this->password);

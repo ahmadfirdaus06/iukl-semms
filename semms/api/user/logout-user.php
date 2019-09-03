@@ -1,6 +1,7 @@
 <?php
    header('Access-Control-Allow-Origin: *');
    header('Content-Type: application/json');
+   header('Access-Control-Allow-Methods: POST');
    header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
    
    include_once '../../config/Database.php';
@@ -12,29 +13,36 @@
    $db = $database->connect();
 
    $user = new User($db);
+
+   $data = json_decode(file_get_contents("php://input"));
+
    $arr = array();
 
    if (isset($_SESSION['user'])){
       extract($_SESSION['user']);
-      $user->user_id = $user_id;
-
-      if($user->updateUserLog()) {
-         $arr['message'] = 'User Log Updated';
-         
-      } 
-      else {
-         $arr['message'] = 'User Log Not Updated';
-      }
-  }
-   
-   
-
-   if(session_destroy()) {
-      $arr['message'] = 'Success';
+      $user->user_id = $user_id;  
    }
    else{
-      $arr['message'] = 'Failed';
+      $user->user_id = $data->user_id;
+   }
+   
+   if($user->updateUserLog()) {
+      
+      if(session_destroy()) {
+         echo json_encode(
+            array('message' => 'Success')
+         );
+      }
+      else{
+         echo json_encode(
+            array('message' => 'Failed')
+         );
+      }
+   } 
+   else {
+      echo json_encode(
+         array('message' => 'Failed')
+      );
    }
 
-   echo json_encode($arr);
 ?>

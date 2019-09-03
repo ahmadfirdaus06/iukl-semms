@@ -42,8 +42,15 @@
                 );
                 $_SESSION['user'] = $user_attr;
                 array_push($user_arr['data'], $user_attr);
-                $user_arr['message'] = 'Access Granted!';
-                echo json_encode($user_arr);
+                if (isset($_SESSION['user']) && !is_null($_SESSION['user'])){
+                    $user_arr['message'] = 'Access Granted!';
+                    echo json_encode($user_arr);    
+                }
+                else{
+                    echo json_encode(
+                        array('message' => 'Access Denied!')
+                    );    
+                }
             }
             else{
                 echo json_encode(
