@@ -107,5 +107,35 @@
     }
 
     //get attachment
+    $result = $attachment->readAll();
+    $num = $result->rowCount();
+    if ($num > 0){
+        while($row = $result->fetch(PDO::FETCH_ASSOC)){
+            extract($row);
+            $arr = array(
+                'attachment_id' => $attachment_id,
+                'path' => $path,
+                'report_id' => $report_id
+            );
+
+            array_push($data_arr['attachmentList'], $arr);
+        }
+    }
+
+    //get misconduct
+    $result = $misconduct->readAll();
+    $num = $result->rowCount();
+    if ($num > 0){
+        while($row = $result->fetch(PDO::FETCH_ASSOC)){
+            extract($row);
+            $arr = array(
+                'misconduct_id' => $misconduct_id,
+                'type' => $type,
+                'report_id' => $report_id
+            );
+
+            array_push($data_arr['misconductList'], $arr);
+        }
+    }
 
 ?>
