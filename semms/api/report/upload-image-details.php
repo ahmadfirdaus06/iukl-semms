@@ -20,9 +20,9 @@
     $total = count($img_paths);
 
     foreach($img_paths as $path){
-        $path = str_replace('\/','/',$path);
-        $attachment->path = str_replace('../../../../semms-uploads/','',$path);
-        // $attachment->path = str_replace('\/','/',$path);
+        // $path = str_replace('\/','/',$path);
+        // $attachment->path = str_replace('../../../../semms-uploads/','',$path);
+        $attachment->path = str_replace('\/','/',$path);
         if ($attachment->create()){
             $count++;
         }
