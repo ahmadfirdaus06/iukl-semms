@@ -25,6 +25,9 @@
         public $witness2_email;
         public $uploaded_by;
         public $last_approval_date;
+        public $is_valid;
+        public $case_status;
+        public $report_status;
 
         public function __construct($db){
             $this->conn = $db;
@@ -32,7 +35,7 @@
 
         public function readAll(){
 
-            $query = 'SELECT * FROM ' . $this->table . ' ORDER BY uploaded_by DESC';
+            $query = 'SELECT * FROM ' . $this->table . ' WHERE is_valid = "Yes" ORDER BY uploaded_by DESC';
             
             $stmt = $this->conn->prepare($query);
 
@@ -42,7 +45,7 @@
         }
 
         public function readByReporterId(){
-            $query = 'SELECT * FROM ' . $this->table . ' WHERE reporter_id = ?';
+            $query = 'SELECT * FROM ' . $this->table . ' WHERE reporter_id = ? && is_valid = "Yes"';
 
             $stmt = $this->conn->prepare($query);
 

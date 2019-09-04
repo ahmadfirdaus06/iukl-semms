@@ -60,6 +60,7 @@
                 extract($row);
                 $arr = array(
                     'report_id' => $report_id,
+                    'student_id' => $student_id,
                     'reporter_id' => $reporter_id,
                     'superior_id' => $superior_id,
                     'course_code' => $course_code,
@@ -77,7 +78,10 @@
                     'witness2_contact_no' => $witness2_contact_no,
                     'witness2_email' => $witness2_email,
                     'uploaded_by' => $uploaded_by,
-                    'last_approval_date' => $last_approval_date
+                    'last_approval_date' => $last_approval_date,
+                    'is_valid' => $is_valid,
+                    'case_status' => $case_status,
+                    'report_status' => $report_status
                 );
 
                 array_push($data_arr['reportList'], $arr);
