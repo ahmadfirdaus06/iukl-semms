@@ -38,7 +38,8 @@
                     'user_type' => $user_type,
                     'created_date' => $created_date,
                     'modified_date' => $modified_date,
-                    'last_login' => $last_login
+                    'last_login' => $last_login,
+                    'granted_access' => $granted_access
                 );
                 $_SESSION['user'] = $user_attr;
                 array_push($user_arr['data'], $user_attr);
