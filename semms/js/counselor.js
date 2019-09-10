@@ -1,5 +1,6 @@
 var app = angular.module('counselor', []);
-app.controller('counselorCtrl', function($scope, $http, $route, $timeout, $window, $location){
+app.controller('counselorCtrl', function($scope, $http, $route, $timeout, $window, $location, $state){
+
     $scope.pageAccess = "Counselor";
 
     $scope.checkAccess = function(){
@@ -19,5 +20,11 @@ app.controller('counselorCtrl', function($scope, $http, $route, $timeout, $windo
                 // console.log(JSON.stringify(response));
           });
         
+    }
+
+    $scope.go = function(path){
+        $state.go(path, null, {
+            location: 'replace'
+        });
     }
 });

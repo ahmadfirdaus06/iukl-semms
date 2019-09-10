@@ -38,11 +38,36 @@ app.config(function($stateProvider, $urlRouterProvider){
         url: '/counselor/reports',
         templateUrl: 'views/counselor/reports.php',
         controller: 'counselorCtrl'
-    });
+    })
+    .state('main.permission-denied', {
+        url: '/403',
+        templateUrl: 'views/403.php',
+        controller: 'userCtrl'
+    })
 });
 
-app.run(function($rootScope) {
-    
-    // $rootScope.url = "http://localhost:8080/iukl-semms/semms";
-    $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
+app.run(function($rootScope, $location, $http, $state, $window) {
+    $rootScope.url = "http://localhost:8080/iukl-semms/semms";
+    // $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
+    $rootScope.verifySession = function(){
+        var data = {
+            current_page: $state.current.name
+        };
+        $http({
+            method : "POST",
+            url : $rootScope.url + "/api/user/get-page-permission.php",
+            data: data,
+            dataType: "application/json"
+        })
+        .then(function mySuccess(response) {
+            if (response.data.url !=  ''){
+                $state.go(response.data.url, null, {
+                    location: 'replace'
+                });
+            }
+        }, 
+        function myError(response) {
+                console.log(response);
+          });
+    }
   });

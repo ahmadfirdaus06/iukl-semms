@@ -1,4 +1,4 @@
-<div ng-init="initDOMMain(); checkSession(); getSession()" class="container-fluid p-0">
+<div ng-init="initDOMMain(); getSession()" class="container-fluid p-0">
     <div class="panel-default">
         <div id="header" class="panel-heading p-3 bg-secondary" style="height:15%">
             <div class="row" style="height:100%" >

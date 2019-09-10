@@ -1,15 +1,18 @@
-<div class="container-fluid p-3" style="background-color: inherit" ng-app="semms" ng-init="verifySession()">
+<div class="container-fluid p-3" ng-init="verifySession()" style="background-color: inherit" ng-app="semms">
     <input type=hidden ng-model="pageAccess" ng-init="pageAccess='Counselor'">
     <div class="container-fluid">
         <div class="row">
             <ul class="nav nav-pills">
                 <li class="nav-item my-auto">
-                    <a class="nav-link" href="#!/main/counselor/dashboard"><h4 class="my-auto text-white">My Dasboard</h4></a>
+                    <a class="nav-link" href="#!/main/counselor/dashboard"><h4 class="my-auto text-white"><small>My Dasboard</small></h4></a>
+                </li>
+                <li class="nav-item my-auto">
+                    <a class="nav-link"><h4 class="my-auto text-white"><span><i class="fas fa-chevron-right"></i></span></h4></a>
+                </li>     
+                <li class="nav-item my-auto">
+                    <a class="nav-link" href="#!/main/counselor/cases"><h4 class="my-auto text-white">Cases</h4></a>
                 </li>                                         
             </ul>   
-            <span class="col"></span>
-            <button class="my-auto btn btn-primary mr-2" ng-click="go('main.cases')" title="All Cases"><i class="fas fa-search"></i> Cases <span class="badge badge-pill badge-light">{{caseCount}}</span></button>
-            <button class="my-auto btn btn-info" ng-click="go('main.reports')" title="All Reports"><i class="fas fa-paperclip"></i> Reports <span class="badge badge-pill badge-light">{{reportCount}}</span></button>            
         </div>
     </div>
     <div class="container-fluid bg-white card p-0 mt-3">

@@ -1,4 +1,4 @@
-<div class="container-fluid p-3" style="background-color: inherit" ng-app="semms" ng-init="initDOMAdmin(); getAllUser()">
+<div id="content" class="container-fluid p-3" style="background-color: inherit" ng-app="semms" ng-init="get()">
     <input type=hidden ng-model="pageAccess" ng-init="pageAccess='Admin'">
     <div class="container-fluid">
         <div class="row justify-content-between">

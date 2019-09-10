@@ -12,6 +12,14 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
         $('#addNewUserModal #saveSpinner').hide();
     };
 
+    $scope.get = function(){
+        $('#content').hide();
+        $scope.initDOMAdmin(); 
+        $scope.getAllUser();
+        $scope.verifySession();
+        $('#content').show();
+    }
+
     $scope.pageAccess = "Admin";
 
     $scope.checkAccess = function(){

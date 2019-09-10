@@ -11,6 +11,29 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         $('#logoutSpinner').hide();
         $('#editProfileModal #saveSpinner').hide();
     };
+    
+    // $scope.verifySession = function(){
+    //     var data = {
+    //         current_page: $state.current.name
+    //     };
+    //     console.log(data);
+    //     $http({
+    //         method : "POST",
+    //         url : $rootScope.url + "/api/user/get-page-permission.php",
+    //         data: data,
+    //         dataType: "application/json"
+    //     })
+    //     .then(function mySuccess(response) {
+    //         if (response.data.url !=  ''){
+    //             $state.go(response.data.url, null, {
+    //                 location: 'replace'
+    //             });
+    //         }
+    //     }, 
+    //     function myError(response) {
+    //             console.log(response);
+    //       });
+    // }
 
     $scope.checkSession = function(){
         $("#loginModal").modal('show');
@@ -77,6 +100,7 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                 $state.go("main", null, {
                     location: 'replace'
                 });
+                $scope.checkSession();
             }
             else if (response.data.message == 'Access Denied'){
                 $('#loginSpinner').hide();
