@@ -1,7 +1,7 @@
 <?php
  class Database{
-     private $host = '192.168.1.139';
-   //   private $host = 'localhost';
+    //  private $host = '192.168.1.139';
+     private $host = 'localhost';
      private $db_name = 'iukl_semms';
      private $username = 'root';
      private $password = '';

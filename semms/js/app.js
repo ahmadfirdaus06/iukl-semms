@@ -47,8 +47,8 @@ app.config(function($stateProvider, $urlRouterProvider){
 });
 
 app.run(function($rootScope, $location, $http, $state, $window) {
-    $rootScope.url = "http://localhost:8080/iukl-semms/semms";
-    // $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
+    // $rootScope.url = "http://localhost:8080/iukl-semms/semms";
+    $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
     $rootScope.verifySession = function(){
         var data = {
             current_page: $state.current.name
