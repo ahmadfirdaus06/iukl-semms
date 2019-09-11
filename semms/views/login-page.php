@@ -24,8 +24,9 @@
 				</div>
 				<div class= "modal-footer">
 					<button style="margin:0 auto; float:none" type="submit" class="btn btn-block btn-lg btn-dark">
-						<div class="row justify-content-center">
-							<span class="my-auto col-2"><strong>Login</strong></span>
+						<div class="row">
+							<span class="my-auto col-4"></span>
+							<span class="my-auto col-4"><strong>Login</strong></span>
 							<div id="loginSpinner" class="spinner-border text-white my-auto"></div>
 						</div>
 					</button>

@@ -27,4 +27,17 @@ app.controller('counselorCtrl', function($scope, $http, $route, $timeout, $windo
             location: 'replace'
         });
     }
+
+    $scope.get = function(){
+        $('#content').hide();
+        // $('#loadingModal').modal('show');
+        $scope.verifySession(function(data){
+            if (!data.err){
+                // $('#loadingModal').modal('hide');
+            }
+            else{
+                // $('#loadingModal').modal('hide');
+            }
+        }); 
+    }
 });

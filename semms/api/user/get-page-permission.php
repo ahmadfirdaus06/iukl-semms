@@ -17,7 +17,7 @@
     $bursary_page = 'main.bursary-dashboard';
     $login_page = 'login';
     $permission_denied_page = 'main.permission-denied';
-
+    
     if (isset($_SESSION['user'])){
         extract($_SESSION['user']);
         $current_page = $data->current_page;
@@ -66,10 +66,11 @@
                 );  
             }
         }
-        else{
-            echo json_encode(
-                array('url' => 'login')
-            );  
-        }
+        
+    }
+    else{
+        echo json_encode(
+            array('url' => 'login')
+        );  
     }
 ?>

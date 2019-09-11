@@ -1,16 +1,15 @@
-<div class="container-fluid p-3" ng-init="verifySession()" style="background-color: inherit" ng-app="semms">
-    <input type=hidden ng-model="pageAccess" ng-init="pageAccess='Counselor'">
+<div class="container-fluid p-3" ng-init="get()" style="background-color: inherit" ng-app="semms">
     <div class="container-fluid">
         <div class="row">
             <ul class="nav nav-pills">
                 <li class="nav-item my-auto">
-                    <a class="nav-link" href="#!/main/counselor/dashboard"><h4 class="my-auto text-white"><small>My Dasboard</small></h4></a>
+                    <a class="nav-link" href="#!/main/counselor/dashboard"><h4 class="my-auto text-white">My Dasboard</h4></a>
                 </li>
                 <li class="nav-item my-auto">
                     <a class="nav-link"><h4 class="my-auto text-white"><span><i class="fas fa-chevron-right"></i></span></h4></a>
                 </li>     
                 <li class="nav-item my-auto">
-                    <a class="nav-link" href="#!/main/counselor/reports"><h4 class="my-auto text-white">Reports</h4></a>
+                    <a class="nav-link" href="#!/main/counselor/reports"><h4 class="my-auto text-white"><u>Reports</u></h4></a>
                 </li>                                         
             </ul>   
         </div>
@@ -21,10 +20,6 @@
                 <h5 class="my-auto">Notification Panel</h5>
             </div>
             <div class="card-body p-0">
-                <!-- <div id="loading" class="row justify-content-center text-dark">
-                    <div class="spinner-border spinner-border-sm my-auto"></div> 
-                    <span class="my-auto ml-3">Loading....</span>
-                </div> -->
                 <table id="userTable" class="table table-bordered table-hover">
                     <thead>
                         <tr>

@@ -3,45 +3,36 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
     
     var table;
 
-    $scope.initDOMAdmin = function(){
+    $scope.initDOMAdmin = function(callback){
         $('#userTable').hide();
         $('#confirmPasswordAlert2').hide();
         $('#existedIdAlert').hide();
         $('#deleteSpinner').hide();
         $('#editUserDataModal #saveSpinner').hide();
         $('#addNewUserModal #saveSpinner').hide();
+        callback({err: false});
     };
 
     $scope.get = function(){
         $('#content').hide();
-        $scope.initDOMAdmin(); 
-        $scope.getAllUser();
-        $scope.verifySession();
-        $('#content').show();
+        $('#loadingModal').modal('show');
+        $scope.verifySession(function(data){
+            if (!data.err){
+                $scope.initDOMAdmin(function(data){
+                    if (!data.err){
+                        $scope.getAllUser(function(data){
+                            if (!data.err){
+                                $('#content').show();
+                                $('#loadingModal').modal('hide');
+                            }
+                        });
+                    }
+                });
+            }
+        }); 
     }
 
-    $scope.pageAccess = "Admin";
-
-    $scope.checkAccess = function(){
-        var data = {
-            page_access: $scope.pageAccess
-        }
-        $http({
-            method : "GET",
-            url : "http://localhost:8080/iukl-semms/semms/api/user/redirect.php",
-            data: data,
-            dataType: "application/json"
-        })
-        .then(function mySuccess(response) {
-            $location.path(response.data.url).replace();
-        }, 
-        function myError(response) {
-                // console.log(JSON.stringify(response));
-          });
-        
-    }
-
-    $scope.getAllUser = function(){
+    $scope.getAllUser = function(callback){
         $http({
             method : "POST",
             url : $rootScope.url + "/api/user/read.php",
@@ -59,11 +50,12 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                     });
                     $('#userTable').show();
                     $('#loading').hide();
+                    callback({err: false});
                 }, 500);
             }
         }, 
         function myError(response) {
-            console.log(response);
+            callback({err: false});
         });
     };
 

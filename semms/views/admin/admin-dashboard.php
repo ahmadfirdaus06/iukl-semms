@@ -1,5 +1,4 @@
 <div id="content" class="container-fluid p-3" style="background-color: inherit" ng-app="semms" ng-init="get()">
-    <input type=hidden ng-model="pageAccess" ng-init="pageAccess='Admin'">
     <div class="container-fluid">
         <div class="row justify-content-between">
             <div class="p-0 col my-auto">
@@ -115,10 +114,10 @@
                     </div>
 				</div>
 				<div class= "modal-footer">
-                    <button class="btn btn-warning text-white" ng-click="removeUser(edit)" type="button">
+                    <!-- <button class="btn btn-warning text-white" ng-click="removeUser(edit)" type="button">
                         <div id="deleteSpinner" class="spinner-border spinner-border-sm text-white"></div>
                         <strong><i id="deleteIcon" class="fas fa-exclamation-triangle"></i> Remove User</strong>
-                        </button>
+                    </button> -->
 					<button class="btn btn-danger" data-dismiss="modal"><strong><i class="fas fa-times"></i> Close</strong></button>
                     <button class="btn btn-success" type="submit">
                         <div id="saveSpinner" class="spinner-border spinner-border-sm text-white"></div>

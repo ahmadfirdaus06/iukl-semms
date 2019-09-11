@@ -46,10 +46,10 @@ app.config(function($stateProvider, $urlRouterProvider){
     })
 });
 
-app.run(function($rootScope, $location, $http, $state, $window) {
-    // $rootScope.url = "http://localhost:8080/iukl-semms/semms";
-    $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
-    $rootScope.verifySession = function(){
+app.run(function($rootScope, $location, $http, $state, $window, $timeout) {
+    $rootScope.url = "http://localhost:8080/iukl-semms/semms";
+    // $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
+    $rootScope.verifySession = function(callback){
         var data = {
             current_page: $state.current.name
         };
@@ -61,13 +61,18 @@ app.run(function($rootScope, $location, $http, $state, $window) {
         })
         .then(function mySuccess(response) {
             if (response.data.url !=  ''){
-                $state.go(response.data.url, null, {
-                    location: 'replace'
-                });
+                $timeout(function(){
+                    $state.go(response.data.url, null, {
+                        location: 'replace'
+                    });
+                 })
+                
+            
             }
+            callback({err: false})
         }, 
         function myError(response) {
-                console.log(response);
+            callback({err: false})
           });
     }
   });
