@@ -6,11 +6,13 @@
 
     include_once '../../config/Database.php';
     include_once '../../model/Attachment.php';
+    include_once '../../model/Notification.php';
 
     $database = new Database();
     $db = $database->connect();
 
     $attachment = new Attachment($db);
+    $notification = new Notification($db);
 
     $data = json_decode(file_get_contents("php://input"));
     
@@ -44,11 +46,20 @@
             $stmt->bindParam(':report_id', $report_id);
 
             if($stmt->execute()) {
-                echo json_encode(
-                    array(
-                        'message' => 'Success',
-                        'report_id' => $report_id)
-                );
+                $notification->related_id = $report_id;
+                if ($notification->insertReportType()){
+                    echo json_encode(
+                        array(
+                            'message' => 'Success',
+                            'report_id' => $report_id)
+                    );
+                }
+                else{
+                    echo json_encode(
+                        array('message' => 'Failed')
+                    );
+                }
+                
             }
             else{
                 echo json_encode(
