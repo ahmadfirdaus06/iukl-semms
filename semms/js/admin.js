@@ -10,25 +10,19 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
         $('#deleteSpinner').hide();
         $('#editUserDataModal #saveSpinner').hide();
         $('#addNewUserModal #saveSpinner').hide();
-        callback({err: false});
+        callback();
     };
 
     $scope.get = function(){
         $('#content').hide();
         $('#loadingModal').modal('show');
-        $scope.verifySession(function(data){
-            if (!data.err){
-                $scope.initDOMAdmin(function(data){
-                    if (!data.err){
-                        $scope.getAllUser(function(data){
-                            if (!data.err){
-                                $('#content').show();
-                                $('#loadingModal').modal('hide');
-                            }
-                        });
-                    }
+        $scope.verifySession(function(){
+            $scope.initDOMAdmin(function(){
+                $scope.getAllUser(function(){
+                    $('#content').show();
+                    $('#loadingModal').modal('hide');
                 });
-            }
+            });
         }); 
     }
 
@@ -50,12 +44,12 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                     });
                     $('#userTable').show();
                     $('#loading').hide();
-                    callback({err: false});
+                    callback();
                 }, 500);
             }
         }, 
         function myError(response) {
-            callback({err: false});
+            callback();
         });
     };
 

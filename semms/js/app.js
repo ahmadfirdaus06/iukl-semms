@@ -63,14 +63,15 @@ app.run(function($rootScope, $location, $http, $state, $window, $timeout) {
             if (response.data.url !=  ''){
                 $timeout(function(){
                     $state.go(response.data.url, null, {
-                        location: 'replace'
+                        location: 'replace',
+                        reload: true
                     });
                  })
             }
-            callback({err: false})
+            callback();
         }, 
         function myError(response) {
-            callback({err: false})
+            callback();
           });
     }
   });

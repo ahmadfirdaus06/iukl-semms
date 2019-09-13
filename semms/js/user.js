@@ -23,7 +23,8 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
             if (response.data.url != null){
                 $('#loginModal').modal('hide');
                 $state.go(response.data.url, null, {
-                    location: 'replace'
+                    location: 'replace',
+                    reload: true
                 });
             }
             else{
@@ -77,7 +78,9 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                 $state.go("main", null, {
                     location: 'replace'
                 });
-                $scope.checkSession();
+                $timeout(function(){
+                    $scope.checkSession();
+                });
             }
             else if (response.data.message == 'Access Denied'){
                 $('#loginSpinner').hide();
