@@ -47,8 +47,9 @@ app.config(function($stateProvider, $urlRouterProvider){
 });
 
 app.run(function($rootScope, $location, $http, $state, $window, $timeout) {
-    // $rootScope.url = "http://localhost:8080/iukl-semms/semms";
-    $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
+    $rootScope.loadingModal = $('#loadingModal');
+    $rootScope.url = "http://localhost:8080/iukl-semms/semms";
+    // $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
     $rootScope.verifySession = function(callback){
         var data = {
             current_page: $state.current.name

@@ -1,4 +1,4 @@
-<div id="content" class="container-fluid p-0 h-100 bg-secondary" style="height:100%" ng-app="semms" ng-init="get()">
+<div id="content" class="container-fluid p-0 h-100 bg-secondary" style="height:100%" ng-app="semms" ng-init="getDashboard()">
     <div class="container-fluid bg-dark" style="height:10%">
         <div class="row" style="height:100%">
             <ul class="nav nav-pills">
@@ -7,9 +7,9 @@
                 </li>                                         
             </ul>   
             <span class="col"></span>
-            <button class="my-auto btn btn-light text-primary mr-2" ng-click="" title="All Cases"><strong><i class="fas fa-search"></i> Cases <span class="badge badge-pill badge-light">{{caseCount}}</span></strong></button>
-            <button class="my-auto btn text-white btn-warning mr-2" ng-click="" title="All Reports"><strong><i class="fas fa-paperclip"></i> Reports <span class="badge badge-pill badge-light">{{reportCount}}</span></strong></button>            
-            <button class="my-auto btn btn-success mr-3" ng-click="" title="All Payments"><strong><i class="fas fa-money-bill-wave-alt"></i> Payments <span class="badge badge-pill badge-light">{{paymentCount}}</span></strong></button>            
+            <button class="my-auto btn btn-light text-dark mr-2" ng-click="" title="All Cases"><strong><i class="fas fa-search"></i> Cases <span class="badge badge-pill badge-dark">{{caseCount}}</span></strong></button>
+            <button class="my-auto btn btn-light text-dark mr-2" ng-click="go('main.reports')" title="All Reports"><strong><i class="fas fa-paperclip"></i> Reports <span class="badge badge-pill badge-dark">{{reportCount}}</span></strong></button>            
+            <button class="my-auto btn btn-light text-dark mr-3" ng-click="" title="All Payments"><strong><i class="fas fa-money-bill-wave-alt"></i> Payments <span class="badge badge-pill badge-dark">{{paymentCount}}</span></strong></button>            
         </div>
     </div>
     <div class="container-fluid p-3" style="height:85%">
@@ -47,7 +47,7 @@
     </div>
 </div>
 <!-- Notification Details Modal -->
-<div class="modal fade" id="notificationDetailsModal" data-backdrop="static" data-keyboard="false">
+<div ng-controller="counselorCtrl" class="modal fade" id="notificationDetailsModal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal modal-dialog-centered" >
 		<div class="modal-content">
 			<div class="modal-header bg-primary text-white">

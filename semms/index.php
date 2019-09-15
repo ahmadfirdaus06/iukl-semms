@@ -28,6 +28,7 @@
     <script src="js\counselor.js"></script>
     </body>
 </HTML>
+
 <!-- Loading Modal -->
 <div class="modal" id="loadingModal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-sm modal-dialog-centered" >
