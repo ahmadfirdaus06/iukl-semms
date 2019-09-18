@@ -69,8 +69,10 @@ app.run(function($rootScope, $http, $state, $timeout, $uibModal) {
             //gets triggers when modal is dismissed.
         });
     };
+    
     $rootScope.url = "http://localhost:8080/iukl-semms/semms";
     // $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
+
     $rootScope.verifySession = function(callback){
         var data = {
             current_page: $state.current.name

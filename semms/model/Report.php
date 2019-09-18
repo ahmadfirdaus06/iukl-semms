@@ -202,29 +202,29 @@
             return false;
         }
 
-        public function updateReportCase(){
-            date_default_timezone_set("Asia/Kuala_Lumpur");
-            $query = 'UPDATE ' . $this->table . '
-            SET 
-            case_status = IFNULL(:case_status, case_status)
-            WHERE report_id = :report_id';
+        // public function updateReportCase(){
+        //     date_default_timezone_set("Asia/Kuala_Lumpur");
+        //     $query = 'UPDATE ' . $this->table . '
+        //     SET 
+        //     case_status = IFNULL(:case_status, case_status)
+        //     WHERE report_id = :report_id';
 
-            $stmt = $this->conn->prepare($query);
+        //     $stmt = $this->conn->prepare($query);
 
-            if (!is_null($this->case_status)){
-                $this->case_status = htmlspecialchars(strip_tags($this->case_status));
-            }
+        //     if (!is_null($this->case_status)){
+        //         $this->case_status = htmlspecialchars(strip_tags($this->case_status));
+        //     }
 
-            $stmt->bindParam(':case_status', $this->case_status);
-            $stmt->bindParam(':report_id', $this->report_id);
+        //     $stmt->bindParam(':case_status', $this->case_status);
+        //     $stmt->bindParam(':report_id', $this->report_id);
 
-            if($stmt->execute()) {
-                return true;
-            }
+        //     if($stmt->execute()) {
+        //         return true;
+        //     }
 
-            printf("Error: %s.\n", $stmt->error);
+        //     printf("Error: %s.\n", $stmt->error);
 
-            return false;
-        }
+        //     return false;
+        // }
     }
 ?>

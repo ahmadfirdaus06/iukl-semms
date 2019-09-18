@@ -2,15 +2,3 @@
     background-color: #000000;
     opacity: 0.5 !important;
 }
-/* #modal.modal-dialog {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow-y: auto;
-    min-height: calc(100vh - 60px);
-}
-@media (max-width: 767px) {
-    #modal.modal-dialog {
-        min-height: calc(100vh - 20px);
-    }
-} */

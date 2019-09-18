@@ -1,5 +1,5 @@
 <!-- Edit Profile Modal -->
-<div id="modal" class="modal-header bg-dark text-white">
+<div id="modal" class="modal-header special-color-dark text-white">
     <h4><strong>Edit My Profile</strong></h4>
     <button type="button" class="close btn btn-link text-white" ng-click="close()">&times;</button>
 </div>

@@ -93,7 +93,8 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
             destroy: true,
             lengthMenu: [ 5, 10, 25, 50, 100 ],
             dom: 't, p',
-            scrollY: '50vh',
+            scrollY: '40vh',
+            // scrollCollapse: true,
             columns: [
                 { width: "5%" },
                 null,
@@ -113,10 +114,10 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
             scrollY: '50vh',
             scrollCollapse: true,
             columns: [
-                { width: "5%" },
                 { width: "10%" },
+                { width: "15%" },
                 null,
-                { width: "10%" },
+                { width: "15%" },
                 { width: "5%" },
               ]
         });
@@ -128,10 +129,10 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
             scrollY: '50vh',
             scrollCollapse: true,
             columns: [
-                { width: "5%" },
                 { width: "10%" },
+                { width: "15%" },
                 null,
-                { width: "10%" },
+                { width: "15%" },
                 { width: "5%" },
               ]
         });
@@ -259,6 +260,96 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
         });
     };
 
+    $scope.updateReport = function(report, status){
+        bootbox.confirm({
+            message: "Mark report #" + report.report_id + " as '" + status + "'?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    $rootScope.openLoadingModal(function(modal){
+                        $scope.loadingModal = modal;
+                    });
+                    var data = {
+                        report_id : report.report_id,
+                        report_status : status
+                    };
+                    $http({
+                        method : "PUT",
+                        url : $rootScope.url + "/api/counselor/approve-report.php",
+                        data: data,
+                        dataType: "application/json;",
+                    })
+                    .then(function mySuccess(response) {
+                        $timeout(function(){
+                            $scope.loadingModal.dismiss();
+                        },500);
+                        if (response.data.message == 'Success'){
+                            $scope.loadingModal.closed.then(function(){
+                                $scope.reportDetailsModal.dismiss();
+                                $scope.reportDetailsModal.closed.then(function(){
+                                    var box = bootbox.dialog({
+                                        message: "<strong>Success!</strong>",
+                                        backdrop: false,
+                                        size: 'small'
+                                    });
+                                    box.find('.modal-content').addClass('text-white bg-success');
+                                    box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%', 'margin-top': '0 auto'});
+                                    setTimeout(function() {
+                                        box.modal('hide');
+                                        $state.reload();
+                                    }, 1000);
+                                });
+                            });
+                        }
+                        else{
+                            $timeout(function(){
+                                $scope.loadingModal.dismiss();
+                            },500);
+                            $scope.loadingModal.closed.then(function(){
+                                var box = bootbox.dialog({
+                                    message: "<strong>Failed! "+ response.data.message +"</strong>",
+                                    backdrop: false,
+                                    size: 'small'
+                                });
+                                box.find('.modal-content').addClass('text-white bg-danger');
+                                box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
+                                setTimeout(function() {
+                                    box.modal('hide');
+                                }, 1000);
+                            });
+                        }
+                    }, 
+                    function myError(response) {
+                        $timeout(function(){
+                            $scope.loadingModal.dismiss();
+                        },500);
+                        $scope.loadingModal.closed.then(function(){
+                            var box = bootbox.dialog({
+                                message: "<strong>Error!</strong>",
+                                backdrop: false,
+                                size: 'small'
+                            });
+                            box.find('.modal-content').addClass('text-white bg-danger');
+                            box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
+                            setTimeout(function() {
+                                box.modal('hide');
+                            }, 1000);
+                        });
+                    });
+                }
+            }
+        });
+    };
+
 
 
     //open report details modal
@@ -303,7 +394,7 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
                         keyboard: false,
                         windowTemplateUrl: "views/modal-window.php",
                         size: 'lg',
-                        controller: function ($scope, $uibModalInstance, report, student, reporter, attachmentList, misconductList) {
+                        controller: function ($scope, $uibModalInstance, report, student, reporter, attachmentList, misconductList, updateReport, openCaseDetails) {
                             $scope.report = report;
                             $scope.student = student;
                             $scope.reporter = reporter;
@@ -312,8 +403,20 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
 
                             $scope.later = function () {
                                 $uibModalInstance.dismiss();
-
                             };
+
+                            $scope.approve = function(){
+                                updateReport($scope.report, 'Approved');
+                            };
+
+                            $scope.deny = function(){
+                                updateReport($scope.report, 'Denied');
+                            };
+
+                            $scope.openCaseDetails = function(){
+                                openCaseDetails($scope.report.report_id);
+                            };
+
                         },
                         resolve:{
                             report: function(){
@@ -330,6 +433,12 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
                             },
                             misconductList: function(){
                                 return response.data.misconductList;
+                            },
+                            updateReport: function(){
+                                return $scope.updateReport;
+                            },
+                            openCaseDetails: function(){
+                                return $scope.openCaseDetailsModal;
                             }
                         }
                     });
@@ -339,6 +448,8 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
                     }, function(){
                         //gets triggers when modal is dismissed.
                     });
+
+                    $scope.reportDetailsModal = modal;
                 });
             }
         }, 
@@ -348,6 +459,32 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
             }, 500);
         });
         
+    };
+
+    //open case details modal
+    $scope.openCaseDetailsModal = function(report_id){
+        var modal;
+        modal =  $uibModal.open({
+            templateUrl: "views/modals/case-details-modal.php",
+            backdropClass: 'dark-backdrop',
+            windowClass : 'show',
+            backdrop: 'static',
+            keyboard: false,
+            windowTemplateUrl: "views/modal-window.php",
+            size: 'lg',
+            controller: function ($scope, $uibModalInstance) {
+                
+            },
+            resolve:{
+                
+            }
+        });
+        
+        modal.result.then(function(){
+            //Get triggers when modal is closed
+        }, function(){
+            //gets triggers when modal is dismissed.
+        });
     };
     
 });

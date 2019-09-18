@@ -1,12 +1,6 @@
 var app = angular.module('user', []);
 app.controller('userCtrl', function($timeout, $scope, $http, $state, $rootScope, $uibModal){
 
-    $scope.initDOMMain = function(){
-        $('#confirmPasswordAlert1').hide();
-        $('#logoutSpinner').hide();
-        $('#editProfileModal #saveSpinner').hide();
-    };
-
     $scope.checkSession = function(){
         $http({
             method : "GET",
@@ -15,7 +9,9 @@ app.controller('userCtrl', function($timeout, $scope, $http, $state, $rootScope,
         })
         .then(function mySuccess(response) {
             if (response.data.url != null){
-                $scope.loginModal.dismiss();
+                if ($scope.loginModal != undefined){
+                    $scope.loginModal.dismiss();
+                }
                 $state.go(response.data.url, null, {
                     location: 'replace'
                 });

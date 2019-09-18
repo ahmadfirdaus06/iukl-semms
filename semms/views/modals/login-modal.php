@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class= "modal-footer">
-        <button style="margin:0 auto; float:none" type="submit" class="btn btn-block btn-lg btn-dark">
+        <button style="margin:0 auto; float:none" type="submit" class="btn special-color-dark text-white btn-block btn-lg">
             <div class="row">
                 <span class="my-auto col-4"></span>
                 <span class="my-auto col-4"><strong>Login</strong></span>
