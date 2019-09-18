@@ -25,7 +25,7 @@
         }
 
         public function readByReportId(){
-            $query = 'SELECT * FROM ' . $this->table . ' WHERE report_id = ? LIMIT 0,1';
+            $query = 'SELECT * FROM ' . $this->table . ' WHERE report_id = ?';
 
             $stmt = $this->conn->prepare($query);
 

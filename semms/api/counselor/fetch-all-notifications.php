@@ -16,24 +16,27 @@
     $data_arr['unreadCount'] = "";
     $count = 0;
     $result = $notification->readAll();
-    $num = $result->rowCount();
-    if ($num > 0){
-        while($row = $result->fetch(PDO::FETCH_ASSOC)){
-            extract($row);
-            if ($is_read == 'No'){
-                $count += 1;
-            }
-            $arr = array(
-                'notification_id' => $notification_id,
-                'subject' => $subject,
-                'description' => $description,
-                'related_id' => $related_id,
-                'tag' => $tag,
-                'date_triggered' => $date_triggered,
-                'is_read' => $is_read
-            );
 
-            array_push($data_arr['notificationList'], $arr);
+    if ($result){
+        $num = $result->rowCount();
+        if ($num > 0){
+            while($row = $result->fetch(PDO::FETCH_ASSOC)){
+                extract($row);
+                if ($is_read == 'No'){
+                    $count += 1;
+                }
+                $arr = array(
+                    'notification_id' => $notification_id,
+                    'subject' => $subject,
+                    'description' => $description,
+                    'related_id' => $related_id,
+                    'tag' => $tag,
+                    'date_triggered' => $date_triggered,
+                    'is_read' => $is_read
+                );
+
+                array_push($data_arr['notificationList'], $arr);
+            }
         }
         $data_arr['message'] = 'Success';
         $data_arr['unreadCount'] = $count;
@@ -44,6 +47,9 @@
             array('message' => 'Failed')
         );
     }
+    
+    
+    
 
     
 

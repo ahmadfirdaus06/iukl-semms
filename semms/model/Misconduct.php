@@ -24,6 +24,18 @@
             return $stmt;
         }
 
+        public function readByReportId(){
+            $query = 'SELECT * FROM ' . $this->table . ' WHERE report_id = ?';
+
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindParam(1, $this->report_id);
+
+            $stmt->execute();
+
+            return $stmt;
+        }
+
 
     }
 ?>

@@ -1,10 +1,5 @@
 var app = angular.module('user', []);
-app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $location, $state, $rootScope){
-
-    $scope.initDOMLogin = function(){
-        $('#loginAlert').hide();
-        $('#loginSpinner').hide();
-    };
+app.controller('userCtrl', function($timeout, $scope, $http, $state, $rootScope, $uibModal){
 
     $scope.initDOMMain = function(){
         $('#confirmPasswordAlert1').hide();
@@ -13,7 +8,6 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     };
 
     $scope.checkSession = function(){
-        // $("#loginModal").modal('show');
         $http({
             method : "GET",
             url : $rootScope.url + "/api/user/redirect.php",
@@ -21,13 +15,38 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         })
         .then(function mySuccess(response) {
             if (response.data.url != null){
-                $('#loginModal').modal('hide');
+                $scope.loginModal.dismiss();
                 $state.go(response.data.url, null, {
                     location: 'replace'
                 });
             }
             else{
-                $('#loginModal').modal('show');
+                $scope.loginModal =  $uibModal.open({
+                    templateUrl: "views/modals/login-modal.php",
+                    backdropClass: 'dark-backdrop',
+                    windowClass : 'show',
+                    backdrop: 'static',
+                    keyboard: false,
+                    size: 'md',
+                    windowTemplateUrl: "views/modal-window.php",
+                    controller: function ($scope, $uibModalInstance, login) {
+                        
+                        $scope.login = function(){
+                            login($scope.staff_id, $scope.password);
+                        };
+                    },
+                    resolve:{
+                        login: function(){
+                            return $scope.login;
+                        }
+                    }
+                });
+                
+                $scope.loginModal.result.then(function(){
+                    //Get triggers when modal is closed
+                }, function(){
+                    //gets triggers when modal is dismissed.
+                });
                 $state.go("login", null, {
                     location: 'replace'
                 });
@@ -56,11 +75,11 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
           });
     }
 
-    $scope.login = function(){
+    $scope.login = function(staff_id, password){
         $('#loginSpinner').show();
         var data = {
-            staff_id: $scope.staff_id,
-            password: $scope.password
+            staff_id: staff_id,
+            password: password
         };
         $http({
             method : "POST",
@@ -89,6 +108,9 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     $scope.logout = function(){
         $('#logoutSpinner').show();
         $('#logoutIcon').hide();
+        $rootScope.openLoadingModal(function(modal){
+            $scope.loginModal = modal;
+        });
         $http({
             method : "GET",
             url : $rootScope.url + "/api/user/logout-user.php",
@@ -98,9 +120,15 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
             if (response.data.message == "Success"){
                 $('#logoutSpinner').hide();
                 $('#logoutIcon').show();
-                $state.go("login", null, {
-                    location: 'replace'
+                $timeout(function(){
+                    $scope.loginModal.dismiss();
+                }, 500);
+                $scope.loginModal.closed.then(function(){
+                    $state.go("login", null, {
+                        location: 'replace'
+                    });
                 });
+                
             }
             
         }, 
@@ -110,6 +138,9 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
     }
 
     $scope.openEditProfileModal = function(){
+        $rootScope.openLoadingModal(function(modal){
+            $scope.loadingModal = modal;
+        });
         $http({
             method : "GET",
             url : $rootScope.url + "/api/user/read-user-session-data.php",
@@ -117,8 +148,49 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
         })
         .then(function mySuccess(response) {
             if (response.data != ""){
-                $('#editProfileModal').modal('show');
-                $scope.edit = response.data.user_session;
+                $timeout(function(){
+                    $scope.loadingModal.dismiss();
+                }, 500);
+                $scope.loadingModal.closed.then(function(){
+                    $scope.editProfileModal = $uibModal.open({
+                        templateUrl: "views/modals/edit-profile-modal.php",
+                        backdropClass: 'dark-backdrop',
+                        windowClass : 'show',
+                        backdrop: 'static',
+                        keyboard: false,
+                        windowTemplateUrl: "views/modal-window.php",
+                        size: 'lg',
+                        controller: function ($scope, $uibModalInstance, edit, save) {
+                            
+                            $scope.edit = edit;
+
+                            $scope.save = function(){
+                                save($scope.edit);
+                            }
+
+                            $scope.close = function(){
+                                $uibModalInstance.dismiss();
+                            };
+                            
+                        },
+                        resolve:{
+                            edit: function(){
+                                return response.data.user_session;
+                            },
+                            save: function(){
+                                return $scope.saveEditProfile;
+                            }
+                            
+                        }
+                    });
+                    
+                    $scope.editProfileModal.result.then(function(){
+                        //Get triggers when modal is closed
+                    }, function(){
+                        //gets triggers when modal is dismissed.
+                    });
+                });
+                
             }
         }, 
         function myError(response) {
@@ -151,6 +223,9 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                 },
                 callback: function (result) {
                     if(result){
+                        $rootScope.openLoadingModal(function(modal){
+                            $scope.loadingModal = modal;
+                        });
                         $('#editProfileModal #saveSpinner').show();
                         $('#editProfileModal #saveIcon').hide();
                         var data = {
@@ -169,26 +244,57 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                         })
                         .then(function mySuccess(response) {
                             if (response.data.message == "User Data Updated"){
-                                $('#editProfileModal #saveSpinner').hide();
-                                $('#editProfileModal #saveIcon').show();
-                                $('#editProfileModal').modal('hide');
-                                var box = bootbox.dialog({
-                                    message: "<strong>Success!</strong>",
-                                    backdrop: false,
-                                    size: 'small'
+                                $timeout(function(){
+                                    $scope.loadingModal.dismiss();
+                                    $('#editProfileModal #saveSpinner').hide();
+                                    $('#editProfileModal #saveIcon').show();
+                                }, 500);
+                                $scope.loadingModal.closed.then(function(){
+                                    $scope.editProfileModal.dismiss();
                                 });
-                                box.find('.modal-content').addClass('text-white bg-success');
-                                box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
-                                setTimeout(function() {
-                                    box.modal('hide');
-                                }, 1000);
-                                $state.reload();
+                                $scope.editProfileModal.closed.then(function(){
+                                    var box = bootbox.dialog({
+                                        message: "<strong>Success!</strong>",
+                                        backdrop: false,
+                                        size: 'small'
+                                    });
+                                    box.find('.modal-content').addClass('text-white bg-success');
+                                    box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%', 'margin-top': '0 auto'});
+                                    setTimeout(function() {
+                                        box.modal('hide');
+                                        $state.reload();
+                                    }, 1000);
+                                });
                             }
                             else{
+                                $timeout(function(){
+                                    $scope.loadingModal.dismiss();
+                                    $('#editProfileModal #saveSpinner').hide();
+                                    $('#editProfileModal #saveIcon').show();
+                                }, 500);
+                                $scope.loadingModal.closed.then(function(){
+                                    var box = bootbox.dialog({
+                                        message: "<strong>Failed! "+ response.data.message +"</strong>",
+                                        backdrop: false,
+                                        size: 'small'
+                                    });
+                                    box.find('.modal-content').addClass('text-white bg-danger');
+                                    box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
+                                    setTimeout(function() {
+                                        box.modal('hide');
+                                    }, 1000);
+                                });
+                            }
+                        }, 
+                        function myError(response) {
+                            $timeout(function(){
+                                $scope.loadingModal.dismiss();
                                 $('#editProfileModal #saveSpinner').hide();
                                 $('#editProfileModal #saveIcon').show();
+                            }, 500);
+                            $scope.loadingModal.closed.then(function(){
                                 var box = bootbox.dialog({
-                                    message: "<strong>Failed! "+ response.data.message +"</strong>",
+                                    message: "<strong>Error!</strong>",
                                     backdrop: false,
                                     size: 'small'
                                 });
@@ -197,21 +303,7 @@ app.controller('userCtrl', function($scope, $http, $route, $timeout, $window, $l
                                 setTimeout(function() {
                                     box.modal('hide');
                                 }, 1000);
-                            }
-                        }, 
-                        function myError(response) {
-                            $('#editProfileModal #saveSpinner').hide();
-                            $('#editProfileModal #saveIcon').show();
-                            var box = bootbox.dialog({
-                                message: "<strong>Error!</strong>",
-                                backdrop: false,
-                                size: 'small'
                             });
-                            box.find('.modal-content').addClass('text-white bg-danger');
-                            box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
-                            setTimeout(function() {
-                                box.modal('hide');
-                            }, 1000);
                         });         
                     }
                 }

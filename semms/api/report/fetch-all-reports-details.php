@@ -52,7 +52,7 @@
             }
         }
 
-        //get report
+        //get report, student, reporter
         $result = $report->readByReporterId();
         $num = $result->rowCount();
         if ($num > 0){

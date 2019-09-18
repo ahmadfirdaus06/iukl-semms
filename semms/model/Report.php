@@ -56,6 +56,52 @@
             return $stmt;
         }
 
+        public function readbyReportId(){
+            $query = 'SELECT 
+            report.report_id,
+            report.course_code,
+            report.course_name,
+            report.exam_venue,
+            report.exam_date,
+            report.exam_time,
+            report.misconduct_time,
+            report.misconduct_description,
+            report.action_taken,
+            report.witness1_name,
+            report.witness1_contact_no,
+            report.witness1_email,
+            report.witness2_name,
+            report.witness2_contact_no,
+            report.witness2_email,
+            report.uploaded_by,
+            report.last_approval_date,
+            report.is_valid,
+            report.case_status,
+            report.report_status,
+            student.matric_id,
+            student.ic_or_passport,
+            student.name AS student_name,
+            student.programme,
+            student.contact_no AS student_contact_no,
+            student.email AS student_email,
+            user.staff_id,
+            user.name AS reporter_name,
+            user.email AS reporter_email,
+            user.contact_no AS reporter_contact_no
+            FROM ' . $this->table . ' 
+            INNER JOIN student ON report.student_id = student.student_id
+            INNER JOIN user ON report.reporter_id = user.user_id
+            WHERE report_id = ? && is_valid = "Yes"';
+
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindParam(1, $this->report_id);
+
+            $stmt->execute();
+
+            return $stmt;
+        }
+
         public function create(){
             
             $query = 'INSERT INTO ' . $this->table . ' SET 

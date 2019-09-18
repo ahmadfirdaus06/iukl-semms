@@ -1,4 +1,4 @@
-var app = angular.module('semms', ['ui.router', 'ngRoute', 'admin', 'user', 'bursary', 'counselor']);
+var app = angular.module('semms', ['ui.bootstrap', 'ui.router', 'ngRoute', 'admin', 'user', 'bursary', 'counselor']);
 app.config(function($stateProvider, $urlRouterProvider){
     
     $urlRouterProvider.otherwise('/login');
@@ -46,8 +46,29 @@ app.config(function($stateProvider, $urlRouterProvider){
     })
 });
 
-app.run(function($rootScope, $location, $http, $state, $window, $timeout) {
-    $rootScope.loadingModal = $('#loadingModal');
+app.run(function($rootScope, $http, $state, $timeout, $uibModal) {
+    $rootScope.openLoadingModal = function(callback){
+        var modal;
+        modal =  $uibModal.open({
+            // templateUrl: "views/modals/loadingModal.php",
+            templateUrl: "views/modals/loading-modal.php",
+            backdropClass: 'dark-backdrop',
+            windowClass : 'show',
+            backdrop: 'static',
+            keyboard: false,
+            windowTemplateUrl: "views/modal-window.php",
+            size: 'sm',
+            controller: function ($scope, $uibModalInstance) {
+                callback($uibModalInstance);
+              }
+          });
+        
+        modal.result.then(function(){
+            //Get triggers when modal is closed
+        }, function(){
+            //gets triggers when modal is dismissed.
+        });
+    };
     $rootScope.url = "http://localhost:8080/iukl-semms/semms";
     // $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
     $rootScope.verifySession = function(callback){
