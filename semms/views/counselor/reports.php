@@ -22,8 +22,8 @@
                     <h5 class="my-auto col"><strong>Awaiting Your Approval</strong> <span ng-if="unreadCount != 0" class="my-auto badge badge-pill badge-light">{{unreadCount}}</span></h5>
                 </div>
             </div>
-            <div class="card-body p-0">
-                <table id="reportTable1" ng-if="pendingList" class="table table-bordered table-hover" style="margin:0 !important">
+            <div class="card-body p-0" style="width:100%">
+                <table id="reportTable1" class="table table-bordered table-hover" style="margin:0 !important; width:100%">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -54,8 +54,8 @@
                 </div>
                 
             </div>
-            <div class="card-body p-0">
-                <table id="reportTable2" ng-if="reportList" class="table table-bordered table-hover" style="margin:0 !important">
+            <div class="card-body p-0" style="width:100%">
+                <table id="reportTable2" class="table table-bordered table-hover" style="margin:0 !important; width:100%">
                     <thead>
                         <tr>
                             <th>No</th>

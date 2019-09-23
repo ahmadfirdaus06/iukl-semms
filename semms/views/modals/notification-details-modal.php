@@ -22,7 +22,7 @@
     <button class="btn btn-success" ng-click="openReportDetails()" ng-if="notification.tag == 'report'">
         <strong >Go to report details <i class="fas fa-arrow-right"></i></strong>
     </button>
-    <button class="btn btn-success" ng-click="" ng-if="notification.tag == 'payment'">
+    <button class="btn btn-success" ng-click="openPaymentDetails()" ng-if="notification.tag == 'payment'">
         <strong >Go to payment details <i class="fas fa-arrow-right"></i></strong>
     </button>
 </div>

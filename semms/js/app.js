@@ -34,16 +34,26 @@ app.config(function($stateProvider, $urlRouterProvider){
         templateUrl: 'views/counselor/cases.php',
         controller: 'counselorCtrl'
     })
+    .state('main.case-details', {
+        url: '/counselor/cases/case-details?id',
+        templateUrl: 'views/counselor/case-details.php',
+        controller: 'counselorCtrl'
+    })
     .state('main.reports', {
         url: '/counselor/reports',
         templateUrl: 'views/counselor/reports.php',
+        controller: 'counselorCtrl'
+    })
+    .state('main.payments', {
+        url: '/counselor/payments',
+        templateUrl: 'views/counselor/payments.php',
         controller: 'counselorCtrl'
     })
     .state('main.permission-denied', {
         url: '/403',
         templateUrl: 'views/403.php',
         controller: 'userCtrl'
-    })
+    });
 });
 
 app.run(function($rootScope, $http, $state, $timeout, $uibModal) {

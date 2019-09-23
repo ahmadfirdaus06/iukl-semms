@@ -7,9 +7,9 @@
                 </li>                                         
             </ul>   
             <span class="col"></span>
-            <button class="my-auto btn btn-white text-dark mr-2" ng-click="" title="All Cases"><strong><i class="fas fa-search"></i> Cases <span class="badge badge-pill badge-dark">{{caseCount}}</span></strong></button>
+            <button class="my-auto btn btn-white text-dark mr-2" ng-click="go('main.cases')" title="All Cases"><strong><i class="fas fa-search"></i> Cases <span class="badge badge-pill badge-dark">{{caseCount}}</span></strong></button>
             <button class="my-auto btn btn-white text-dark mr-2" ng-click="go('main.reports')" title="All Reports"><strong><i class="fas fa-paperclip"></i> Reports <span class="badge badge-pill badge-dark">{{reportCount}}</span></strong></button>            
-            <button class="my-auto btn btn-white text-dark mr-3" ng-click="" title="All Payments"><strong><i class="fas fa-money-bill-wave-alt"></i> Payments <span class="badge badge-pill badge-dark">{{paymentCount}}</span></strong></button>            
+            <button class="my-auto btn btn-white text-dark mr-3" ng-click="go('main.payments')" title="All Payments"><strong><i class="fas fa-money-bill-wave-alt"></i> Payments <span class="badge badge-pill badge-dark">{{paymentCount}}</span></strong></button>            
         </div>
     </div>
     <div  id="content" class="container-fluid p-3" style="height:90%; overflow-y:auto; display:none">
@@ -21,8 +21,8 @@
                 </div>
                 
             </div>
-            <div class="card-body p-0">
-                <table id="notificationTable" ng-if="notificationList" class="table table-bordered table-hover" style="margin:0 !important">
+            <div class="card-body p-0" style="width:100%">
+                <table id="notificationTable" class="table table-bordered table-hover" style="margin:0 !important; width:100%">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -32,10 +32,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="notification in notificationList" ng-class="{'font-weight-bold': read == notification.is_read, 'font-weight-normal': read != notification.is_read}" ng-if="read = 'No'">
-                            <td>{{$index+1}}</td>
-                            <td>{{notification.subject}}</td>
-                            <td>{{notification.date_triggered}}</td>
+                        <tr ng-repeat="notification in notificationList">
+                            <td ng-class="{'font-weight-bold': notification.is_read == 'No', 'font-weight-normal': notification.is_read == 'Yes'}">{{$index+1}}</td>
+                            <td ng-class="{'font-weight-bold': notification.is_read == 'No', 'font-weight-normal': notification.is_read == 'Yes'}">{{notification.subject}}</td>
+                            <td ng-class="{'font-weight-bold': notification.is_read == 'No', 'font-weight-normal': notification.is_read == 'Yes'}">{{notification.date_triggered}}</td>
                             <td style="text-align:center"><button data-toggle="tooltip" title="More details" ng-click="openNotificationDetailsModal(notification)" class="btn btn-sm btn-primary m-0"><i class="fas fa-info-circle"></i></button></td>
                         </tr>
                     </tbody>

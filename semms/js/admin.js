@@ -1,27 +1,19 @@
 var app = angular.module('admin', []);
-app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $location, $rootScope, $state){
-    
-    var table;
+app.controller('adminCtrl', function($scope, $http, $timeout, $rootScope, $state){
 
-    $scope.initDOMAdmin = function(callback){
-        $('#userTable').hide();
-        $('#confirmPasswordAlert2').hide();
-        $('#existedIdAlert').hide();
-        $('#deleteSpinner').hide();
-        $('#editUserDataModal #saveSpinner').hide();
-        $('#addNewUserModal #saveSpinner').hide();
-        callback();
-    };
-
-    $scope.get = function(){
-        $('#content').hide();
-        $('#loadingModal').modal('show');
+    $scope.getDashboard = function(){
+        $rootScope.openLoadingModal(function(modal){
+            $scope.loadingModal = modal;
+        });
         $scope.verifySession(function(){
-            $scope.initDOMAdmin(function(){
-                $scope.getAllUser(function(){
-                    $('#content').show();
-                    $('#loadingModal').modal('hide');
-                });
+            $scope.getAllUser(function(){
+                $timeout(function(){
+                    $scope.loadingModal.dismiss();
+                    $scope.loadingModal.closed.then(function(){
+                        $('#content').css({'display': 'block'});
+                        $scope.createUserTable();
+                    });
+                },500);
             });
         }); 
     }
@@ -37,13 +29,6 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
             $scope.totalUser = response.data.data.length;
             if($scope.allUser != ""){
                 $timeout(function() {
-                    table = $('#userTable').DataTable({
-                        pageLength: 5,
-                        lengthMenu: [ 5, 10, 25, 50, 100 ],
-                        dom: 't, p'
-                    });
-                    $('#userTable').show();
-                    $('#loading').hide();
                     callback();
                 }, 500);
             }
@@ -53,8 +38,20 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
         });
     };
 
+    $scope.createUserTable = function(){
+        $scope.userTable = $('#userTable').DataTable({
+            destroy: true,
+            pageLength: 10,
+            destroy: true,
+            dom: 't, p',
+            scrollY: '40vh',    
+        });
+    };
+
     $scope.openEditUserDataModal = function(user){
-        $('#loadingModal').modal('show');
+        $rootScope.openLoadingModal(function(modal){
+            $loadingModal = modal;
+        });
         var data = {
             user_id: user.user_id
         };
@@ -67,10 +64,10 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
         .then(function mySuccess(response) {
             if (response.data.data != ""){
                 setTimeout(function(){
-                    $('#loadingModal').modal('hide');
+                    $loadingModal.dismiss();
                 }, 500);
                 $scope.edit = response.data.data[0];
-                $("#loadingModal").on("hidden.bs.modal", function () {
+                $scope.loadingModal.closed.then(function(){
                     $('#editUserDataModal').modal('show');
                 });
             }
@@ -109,6 +106,9 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                     if(result){
                         $('#editUserDataModal #saveSpinner').show();
                         $('#editUserDataModal #saveIcon').hide();
+                        $rootScope.openLoadingModal(function(modal){
+                            $scope.loadingModal = modal;
+                        });
                         var data = {
                             user_id: edit.user_id,
                             name: edit.name,
@@ -127,27 +127,51 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                             dataType: "application/json"
                         })
                         .then(function mySuccess(response) {
-                            if (response.data.message == "User Data Updated"){
+                            $timeout(function(){
+                                $scope.loadingModal.dismiss();
+                            },500);
+                            $scope.loadingModal.closed.then(function(){
+                                if (response.data.message == "User Data Updated"){
+                                    $('#editUserDataModal #saveSpinner').hide();
+                                    $('#editUserDataModal #saveIcon').show();
+                                    $('#editUserDataModal').modal('hide');
+                                    var box = bootbox.dialog({
+                                        message: "<strong>Success!</strong>",
+                                        backdrop: false,
+                                        size: 'small'
+                                    });
+                                    box.find('.modal-content').addClass('text-white bg-success');
+                                    box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
+                                    setTimeout(function() {
+                                        box.modal('hide');
+                                    }, 1000);
+                                    $state.reload();
+                                }
+                                else{
+                                    $('#editUserDataModal #saveSpinner').hide();
+                                    $('#editUserDataModal #saveIcon').show();
+                                    var box = bootbox.dialog({
+                                        message: "<strong>Failed! "+ response.data.message +"</strong>",
+                                        backdrop: false,
+                                        size: 'small'
+                                    });
+                                    box.find('.modal-content').addClass('text-white bg-danger');
+                                    box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
+                                    setTimeout(function() {
+                                        box.modal('hide');
+                                    }, 1000);
+                                }
+                            });
+                            
+                        }, 
+                        function myError(response) {
+                            console.log(response);
+                            $scope.loadingModal.dismiss();
+                            $scope.loadingModal.closed.then(function(){
                                 $('#editUserDataModal #saveSpinner').hide();
                                 $('#editUserDataModal #saveIcon').show();
-                                $('#editUserDataModal').modal('hide');
                                 var box = bootbox.dialog({
-                                    message: "<strong>Success!</strong>",
-                                    backdrop: false,
-                                    size: 'small'
-                                });
-                                box.find('.modal-content').addClass('text-white bg-success');
-                                box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
-                                setTimeout(function() {
-                                    box.modal('hide');
-                                }, 1000);
-                                $state.reload();
-                            }
-                            else{
-                                $('#editUserDataModal #saveSpinner').hide();
-                                $('#editUserDataModal #saveIcon').show();
-                                var box = bootbox.dialog({
-                                    message: "<strong>Failed! "+ response.data.message +"</strong>",
+                                    message: "<strong>Error!</strong>",
                                     backdrop: false,
                                     size: 'small'
                                 });
@@ -156,21 +180,7 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                                 setTimeout(function() {
                                     box.modal('hide');
                                 }, 1000);
-                            }
-                        }, 
-                        function myError(response) {
-                            $('#editUserDataModal #saveSpinner').hide();
-                            $('#editUserDataModal #saveIcon').show();
-                            var box = bootbox.dialog({
-                                message: "<strong>Error!</strong>",
-                                backdrop: false,
-                                size: 'small'
                             });
-                            box.find('.modal-content').addClass('text-white bg-danger');
-                            box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
-                            setTimeout(function() {
-                                box.modal('hide');
-                            }, 1000);
                         });         
                     }
                 }
@@ -180,8 +190,7 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
     };
 
     $scope.searchTable = function(text){
-        // var table = $scope.table;
-        table.search(text).draw();
+        $scope.userTable.search(text).draw();
     };
 
     $scope.checkExistingId = function(text){
@@ -233,6 +242,9 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                     $('#addNewUserModal #saveSpinner').show();
                     $('#addNewUserModal #saveIcon').hide();
                     if (result){
+                        $rootScope.openLoadingModal(function(modal){
+                            $scope.loadingModal = modal;
+                        });
                         var data = {
                             staff_id: user.staff_id,
                             name: user.name,
@@ -248,25 +260,46 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                             dataType: "application/json"
                         })
                         .then(function mySuccess(response) {
-                            if (response.data.message == "User Created"){
-                                $('#addNewUserModal #saveSpinner').hide();
-                                $('#addNewUserModal #saveIcon').show();
-                                $('#addNewUserModal').modal('hide');
+                            $scope.loadingModal.dismiss();
+                            $scope.loadingModal.closed.then(function(){
+                                if (response.data.message == "User Created"){
+                                    $('#addNewUserModal #saveSpinner').hide();
+                                    $('#addNewUserModal #saveIcon').show();
+                                    $('#addNewUserModal').modal('hide');
+                                        var box = bootbox.dialog({
+                                            message: "<strong>Success!</strong><br>Instruct user to login and change the default password => 123",
+                                            backdrop: false,
+                                        });
+                                        box.find('.modal-content').addClass('text-white bg-success');
+                                        setTimeout(function() {
+                                            box.modal('hide');
+                                        }, 5000);
+                                        $state.reload();
+                                }
+                                else{
+                                    $('#addNewUserModal #saveSpinner').hide();
+                                    $('#addNewUserModal #saveIcon').show();
                                     var box = bootbox.dialog({
-                                        message: "<strong>Success!</strong><br>Instruct user to login and change the default password => 123",
+                                        message: "<strong>Failed! "+ response.data.message +"</strong>",
                                         backdrop: false,
+                                        size: 'small'
                                     });
-                                    box.find('.modal-content').addClass('text-white bg-success');
+                                    box.find('.modal-content').addClass('text-white bg-danger');
+                                    box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
                                     setTimeout(function() {
                                         box.modal('hide');
-                                    }, 5000);
-                                    $state.reload();
-                            }
-                            else{
+                                    }, 1000);
+                                }
+                            });
+                        }, 
+                        function myError(response) {
+                            console.log(response);
+                            $scope.loadingModal.dismiss();
+                            $scope.loadingModal.closed.then(function(){
                                 $('#addNewUserModal #saveSpinner').hide();
                                 $('#addNewUserModal #saveIcon').show();
                                 var box = bootbox.dialog({
-                                    message: "<strong>Failed! "+ response.data.message +"</strong>",
+                                    message: "<strong>Error! "+ response.data.message +"</strong>",
                                     backdrop: false,
                                     size: 'small'
                                 });
@@ -275,22 +308,7 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
                                 setTimeout(function() {
                                     box.modal('hide');
                                 }, 1000);
-                            }
-                        }, 
-                        function myError(response) {
-                            // console.log(response);
-                            $('#addNewUserModal #saveSpinner').hide();
-                            $('#addNewUserModal #saveIcon').show();
-                            var box = bootbox.dialog({
-                                message: "<strong>Error! "+ response.data.message +"</strong>",
-                                backdrop: false,
-                                size: 'small'
                             });
-                            box.find('.modal-content').addClass('text-white bg-danger');
-                            box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
-                            setTimeout(function() {
-                                box.modal('hide');
-                            }, 1000);
                         });
                     }
                 }
@@ -328,86 +346,26 @@ app.controller('adminCtrl', function($scope, $http, $route, $timeout, $window, $
         }
     };
 
-    $scope.removeUser = function(user){
-        bootbox.confirm({
-            message: "<p class='text-danger'><strong><i class='fas fa-exclamation-triangle'></i> Are you sure you want to remove this user?</strong></p><br>" + 
-            "<p class='text-danger'>Removing such user could cause error in database record!</p>" +
-            "<br>Staff ID => " + user.staff_id +
-            "<br>Name => " + user.name +
-            "<br>Access => " + user.user_type,
-            buttons: {
-                confirm: {
-                    label: 'Yes',
-                    className: 'btn-success'
-                },
-                cancel: {
-                    label: 'No',
-                    className: 'btn-danger'
-                }
-            },
-            callback: function (result) {
-                if (result){
-                    $('#deleteSpinner').show();
-                    $('#deleteIcon').hide();
-                    var data = {
-                        user_id: user.user_id
-                    };
-
-                    $http({
-                        method : "DELETE",
-                        url : $rootScope.url + "/api/user/delete.php",
-                        data: data,
-                        dataType: "application/json"
-                    })
-                    .then(function mySuccess(response) {
-                        if (response.data.message == "User Deleted"){
-                            $('#deleteSpinner').hide();
-                            $('#deleteIcon').show();
-                            $('#editUserDataModal').modal('hide');
-                                var box = bootbox.dialog({
-                                    message: "<strong>Success!</strong>",
-                                    backdrop: false,
-                                    size: 'small'
-                                });
-                                box.find('.modal-content').addClass('text-white bg-success');
-                                box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
-                                setTimeout(function() {
-                                    box.modal('hide');
-                                }, 1000);
-                                $state.reload();
-                        }
-                        else{
-                            $('#deleteSpinner').hide();
-                            $('#deleteIcon').show();
-                            var box = bootbox.dialog({
-                                message: "<strong>Failed! "+ response.data.message +"</strong>",
-                                backdrop: false,
-                                size: 'small'
-                            });
-                            box.find('.modal-content').addClass('text-white bg-danger');
-                            box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
-                            setTimeout(function() {
-                                box.modal('hide');
-                            }, 1000);
-                        }
-                    }, 
-                    function myError(response) {
-                        $('#deleteSpinner').hide();
-                        $('#deleteIcon').show();
-                        var box = bootbox.dialog({
-                            message: "<strong>Error! "+ response.data.message +"</strong>",
-                            backdrop: false,
-                            size: 'small'
-                        });
-                        box.find('.modal-content').addClass('text-white bg-danger');
-                        box.find('.modal-dialog').addClass('float-right mr-3').css({'width': '100%'});
-                        setTimeout(function() {
-                            box.modal('hide');
-                        }, 1000);
-                    });
-                }
-            }
-        });
-
-    };
+    // $scope.openAddNewUserModal = function(){
+    //     $scope.addUserModal = $uibModal.open({
+    //         templateUrl: "views/modals/add-new-user-modal.php",
+    //         backdropClass: 'dark-backdrop',
+    //         windowClass : 'show',
+    //         backdrop: 'static',
+    //         keyboard: false,
+    //         windowTemplateUrl: "views/modal-window.php",
+    //         size: 'md',
+    //         controller: function ($scope, $uibModalInstance) {
+                
+    //         },
+    //         resolve:{
+    //         }
+    //     });
+        
+    //     $scope.addUserModal.result.then(function(){
+    //         //Get triggers when modal is closed
+    //     }, function(){
+    //         //gets triggers when modal is dismissed.
+    //     });
+    // };
 });

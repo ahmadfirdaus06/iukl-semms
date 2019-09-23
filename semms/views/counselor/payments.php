@@ -1,14 +1,20 @@
-<div class="container-fluid p-0 stylish-color" style="height:100%; overflow:hidden" ng-app="semms" ng-init="getDashboard()">
+<div class="container-fluid p-0 stylish-color" style="height:100%; overflow:hidden" ng-app="semms" ng-init="getPayment()">
     <div class="container-fluid special-color-dark" style="height:10%">
         <div class="row" style="height:100%">
             <ul class="nav nav-pills">
                 <li class="nav-item my-auto">
-                    <a class="nav-link" href="#!/main/bursary/dashboard"><h4 class="my-auto text-white"><strong>My Dashboard</strong></h4></a>
-                </li>                                         
+                        <a class="nav-link" href="#!/main/counselor/dashboard"><h4 class="my-auto text-white"><strong>My Dashboard</strong></h4></a>
+                </li>
+                <li class="nav-item my-auto">
+                    <a class="nav-link"><h4 class="my-auto text-white"><span><i class="fas fa-chevron-right"></i></span></h4></a>
+                </li>     
+                <li class="nav-item my-auto">
+                    <a class="nav-link" href="#!/main/counselor/payments"><h4 class="my-auto text-white"><u><strong>Payments</strong></u></h4></a>
+                </li>                                            
             </ul>    
         </div>
     </div>
-    <div  id="content" class="container-fluid p-3" style="height:90%; overflow-y:auto; display:none">
+    <div id="content" class="container-fluid p-3" style="height:90%; overflow-y:auto; display:none">
         <!-- pending payment table -->
         <div class="container-fluid card p-0">
             <div class="card-header special-color-dark text-white">
@@ -22,9 +28,7 @@
                         <tr>
                             <th>No</th>
                             <th>Reference Case ID</th>
-                            <th>Student ID</th>
-                            <th>Student Name</th>
-                            <th>Date Issued</th>
+                            <th>Outstanding</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -32,10 +36,8 @@
                         <tr ng-repeat="payment in pendingList">
                             <td>{{$index+1}}</td>
                             <td>#{{payment.case_id}}</td>
-                            <td>{{payment.student_id}}</td>
-                            <td>{{payment.student_name}}</td>
-                            <td>{{payment.date_issued}}</td>
-                            <td style="text-align:center"><button data-toggle="tooltip" title="More details" ng-click="openPaymentDetailsModal(payment.payment_id)" class="btn btn-primary btn-sm m-0"><i class="fas fa-info-circle"></i></button></td>
+                            <td>RM {{convertToCurrency(payment.outstanding)}}</td>
+                            <td style="text-align:center"><button data-toggle="tooltip" title="More details" ng-click="openPaymentDetailsModal(payment.id, payment.case_id)" class="btn btn-primary btn-sm m-0"><i class="fas fa-info-circle"></i></button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -54,9 +56,7 @@
                         <tr>
                             <th>No</th>
                             <th>Reference Case ID</th>
-                            <th>Student ID</th>
-                            <th>Student Name</th>
-                            <th>Date Issued</th>
+                            <th>Outstanding</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -64,14 +64,12 @@
                         <tr ng-repeat="payment in paymentList">
                             <td>{{$index+1}}</td>
                             <td>#{{payment.case_id}}</td>
-                            <td>{{payment.student_id}}</td>
-                            <td>{{payment.student_name}}</td>
-                            <td>{{payment.date_issued}}</td>
-                            <td style="text-align:center"><button data-toggle="tooltip" title="More details" ng-click="openPaymentDetailsModal(payment.payment_id)" class="btn btn-primary btn-sm m-0"><i class="fas fa-info-circle"></i></button></td>
+                            <td >RM {{convertToCurrency(payment.outstanding)}}</td>
+                            <td style="text-align:center"><button data-toggle="tooltip" title="More details" ng-click="openPaymentDetailsModal(payment.id, payment.case_id)" class="btn btn-primary btn-sm m-0"><i class="fas fa-info-circle"></i></button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-</div>  
+</div>

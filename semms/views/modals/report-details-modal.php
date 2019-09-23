@@ -1,6 +1,6 @@
 <!-- Report Details Modal -->
 <div id="modal" class="modal-header text-white bg-primary">
-    <h4><strong>Report #{{report.report_id}} Details <i>(Status: {{report.report_status}}</i>)</strong></h4>
+    <h4><strong>Report #{{report.report_id}} Details <small><span ng-class="{'badge-success': report.report_status == 'Approved', 'badge-danger': report.report_status == 'Denied', 'badge-light': report.report_status == 'Pending',}" class="my-auto badge">{{report.report_status}}</span></small></strong></h4>
     <button type="button" class="close btn btn-link text-white" ng-click="later()">&times;</button>
 </div>
 			
@@ -129,7 +129,7 @@
     <button class="btn btn-danger" ng-if="report.report_status == 'Pending'" ng-click="deny()">
         <strong><i class="fas fa-times"></i> Deny</strong>
     </button>
-    <button class="btn btn-success" ng-click="openCaseDetails()" ng-if="report.report_status == 'Approved'">
+    <button class="btn btn-success" ng-click="openCaseDetails()" ng-if="report.report_status == 'Approved' && hasId == false">
         <strong >Go to case details <i class="fas fa-arrow-right"></i></strong>
     </button>
 </div>

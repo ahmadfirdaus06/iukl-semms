@@ -13,7 +13,7 @@
 
     $data = json_decode(file_get_contents("php://input"));
 
-    $notification->notification_id = $data->notification_id;
+    $notification->id = $data->id;
 
     if ($notification->changeToRead()){
         $data_arr = array();
@@ -25,7 +25,7 @@
             while($row = $result->fetch(PDO::FETCH_ASSOC)){
                 extract($row);
                 $arr = array(
-                    'notification_id' => $notification_id,
+                    'id' => $id,
                     'subject' => $subject,
                     'description' => $description,
                     'related_id' => $related_id,

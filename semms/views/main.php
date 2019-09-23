@@ -3,11 +3,11 @@
         <div id="header" class="panel-heading p-3 stylish-color" style="height:15%">
             <div class="row" style="height:100%" >
                 <div class="col-sm my-auto">
-                    <h2 class="text-white"><b><strong>IUKL S<small>tudent</small> E<small>xam</small> M<small>isconduct</small> M<small>anagement</small> S<small>ystem</small></strong></b></h2>
+                    <h2 class="text-white"><i><b><strong>IUKL S<small>tudent</small> E<small>xam</small> M<small>isconduct</small> M<small>anagement</small> S<small>ystem</small></strong></b></i></h2>
                 </div>
                 <div class="my-auto">
                     <div class="row special-color-dark border-special-color-dark rounded">
-                            <p class="col-sm my-auto text-white" data-toggle="tooltip" title="{{last_login}}" ng-cloak><b><i>{{name}}</i> [<i>{{user_type}}</i>]</b></p>
+                            <p class="col-sm my-auto text-white" data-toggle="tooltip" title="{{last_login}}" ng-cloak><b>{{name}} [{{user_type}}]</b></p>
                             <button class="my-auto btn btn-flat btn-md p-3 text-white special-color-dark rounded-0" data-toggle="tooltip" data-target="#editProfileModal" ng-click="openEditProfileModal()" title="Edit Profile"><i class="fas fa-cog"></i></button>
                     </div>
                 </div>

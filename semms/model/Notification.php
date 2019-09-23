@@ -5,7 +5,7 @@
         private $table = 'notification';
 
         //properties
-        public $notification_id;
+        public $id;
         public $subject;
         public $description;
         public $related_id;
@@ -29,13 +29,11 @@
         }
 
         public function readById(){
-            $query = 'SELECT * FROM ' . $this->table . ' WHERE notification_id = ? LIMIT 1';
+            $query = 'SELECT * FROM ' . $this->table . ' WHERE id = ? LIMIT 1';
             
             $stmt = $this->conn->prepare($query);
 
-            // $this->notification_id = htmlspecialchars(strip_tags($this->notification_id));
-
-            $stmt->bindParam(1, $this->notification_id);
+            $stmt->bindParam(1, $this->id);
 
             $stmt->execute();
 
@@ -46,18 +44,18 @@
             $query = 'UPDATE ' . $this->table . '
             SET  
             is_read = :is_read
-            WHERE notification_id = :notification_id';
+            WHERE id = :id';
 
             $stmt = $this->conn->prepare($query);
 
             $this->is_read = 'Yes';
 
-            if (!is_null($this->notification_id)){
-                $this->notification_id = htmlspecialchars(strip_tags($this->notification_id));
+            if (!is_null($this->id)){
+                $this->id = htmlspecialchars(strip_tags($this->id));
             }
 
             $stmt->bindParam(':is_read', $this->is_read);
-            $stmt->bindParam(':notification_id', $this->notification_id);
+            $stmt->bindParam(':id', $this->id);
 
             if($stmt->execute()) {
                 return true;

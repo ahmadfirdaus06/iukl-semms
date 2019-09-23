@@ -26,7 +26,7 @@
                     $count += 1;
                 }
                 $arr = array(
-                    'notification_id' => $notification_id,
+                    'id' => $id,
                     'subject' => $subject,
                     'description' => $description,
                     'related_id' => $related_id,
