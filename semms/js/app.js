@@ -80,8 +80,8 @@ app.run(function($rootScope, $http, $state, $timeout, $uibModal) {
         });
     };
     
-    $rootScope.url = "http://localhost:8080/iukl-semms/semms";
-    // $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
+    // $rootScope.url = "http://localhost:8080/iukl-semms/semms";
+    $rootScope.url = "http://semms.ddns.net:8080/iukl-semms/semms";
 
     $rootScope.verifySession = function(callback){
         var data = {

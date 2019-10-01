@@ -16,7 +16,7 @@
     $data_arr['message'] = "Success"; 
 
     try{
-        $result = R::getAll('
+        $result = R::getAll("
         SELECT 
         cases.id AS case_id, 
         cases.report_id, 
@@ -33,15 +33,16 @@
         FROM stagehistory
         INNER JOIN cases
         ON stagehistory.case_id = cases.id
-        INNER JOIN payment
+        LEFT JOIN payment
         ON cases.id = payment.case_id
         WHERE cases.report_id = ?
-        ORDER BY date_history_created ASC   
-        ', [$report_id] );
+        ORDER BY date_history_created ASC 
+        ", [$report_id]);
 
         //add into stage list
         foreach ($result as $item){
             $obj = json_decode(json_encode($item));
+        
             $arr1 = array(
                 'stage_id' => $obj->stage_id,
                 'type' => $obj->type,

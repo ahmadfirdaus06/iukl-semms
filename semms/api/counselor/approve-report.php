@@ -10,6 +10,7 @@
     include_once '../../model/Cases.php';
     include_once '../../model/PrimaryInvestigation.php';
     include_once '../../model/StageHistory.php';
+    include_once '../../config/Email.php';
 
     $database = new Database();
     $db = $database->connect();
@@ -17,6 +18,7 @@
     $cases = new Cases();
     $primary_inv = new PrimaryInvestigation();
     $history = new StageHistory();
+    $email = new Email();
 
     $data = json_decode(file_get_contents("php://input"));
 
@@ -26,22 +28,23 @@
     $result = $report->approveReport();
 
     if ($result){
+
+        $cases->report_id = $report->report_id;
+        $data_arr = array();
+        $data_arr['message'] = "Success"; 
+        $data_arr['caseDetails'] = array();
+
         if ($report->report_status == 'Approved'){
-
-            $cases->report_id = $report->report_id;
-            $data_arr = array();
-            $data_arr['caseDetails'] = array();
-            $data_arr['message'] = "Success"; 
-
-            if ($cases->create()){
+            if ($cases->create() && $email->caseOpened()){
                 $primary_inv->case_id = $cases->id;
-                if ($primary_inv->create()){
+                if ($primary_inv->create() && $email->primaryInvestigation()){
                     $history->case_id = $cases->id;
                     $history->type = $primary_inv->table;
                     $history->stage_id = $primary_inv->id;
                     if ($history->create()){
                         if ($history->readById()){
                             $data_arr['caseDetails'] = $history->result;
+                            echo json_encode($data_arr);
                         }
                     }
                     else{
@@ -63,12 +66,11 @@
                 );
             }
         }
-        echo json_encode($data_arr);
 
     }
     else{
         echo json_encode(
-            array('message' => 'Failed')
+            array('message' => 'Fail')
         );
     }
 ?>

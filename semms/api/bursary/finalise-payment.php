@@ -5,6 +5,9 @@
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
     include_once '../../config/BeanConfig.php';
+    include_once '../../config/Email.php';
+
+    $email = new Email();
 
     $data = json_decode(file_get_contents("php://input"));
 
@@ -30,7 +33,10 @@
         stagehistory.last_updated = ?
         WHERE stagehistory.case_id = payment.case_id AND payment.id = ? && payment.case_id = ? && stagehistory.type = 'Fine Settlement'
         ", [$outstanding, $last_updated, $last_updated, $payment_id, $case_id]);
-
+        
+        $email->paid_amount = $data->paid_amount;
+        $email->outstanding = $outstanding;
+        $email->paid();
         
         if ($outstanding == 0.00){
             R::exec("
@@ -48,13 +54,14 @@
             $notification->related_id = $payment_id;
             $notification->tag = $tag;
             R::store($notification);
+            $email->caseClosed();
         }
-
         echo json_encode(
             array(
                 'message' =>'Success'
             )
         );
+        
     }
     catch(Exception $e){
         echo json_encode(

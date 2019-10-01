@@ -12,5 +12,4 @@ if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)){
             array('image_path' => $target_file), JSON_UNESCAPED_SLASHES
         );
 }
-
 ?>

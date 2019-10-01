@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                             <br>
-                            <div ng-if="paymentDetails != ''" class="card stylish-color">
+                            <div ng-if="paymentDetails.payment_status != null" class="card stylish-color">
                                 <div class="card-header"><strong>Fine Payment Status</strong></div>
                                 <div class="card-body">
                                     <label><h4>{{paymentDetails.payment_status}}</h4></label>

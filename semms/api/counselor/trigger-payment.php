@@ -5,6 +5,9 @@
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
     include_once '../../config/BeanConfig.php';
+    include_once '../../config/Email.php';
+
+    $email = new Email();
 
     $data = json_decode(file_get_contents("php://input"));
 
@@ -24,6 +27,8 @@
     $case_id = htmlspecialchars(strip_tags($data->case_id));
 
     $fine_amount = htmlspecialchars(strip_tags($data->fine_amount));
+
+    $email->issued_amount = $fine_amount;
 
     $payment_status = 'Pending';
 
@@ -48,11 +53,20 @@
         $payment->last_paid = null;
         R::store($payment);
 
-        echo json_encode(
-            array(
-                'message' => 'Success'
-            )
-        );
+        if ($email->paymentSet()){
+            echo json_encode(
+                array(
+                    'message' => 'Success'
+                )
+            );
+        }
+        else{
+            echo json_encode(
+                array(
+                    'message' => 'Fail'
+                )
+            );
+        }
 
     }
     catch(Exception $e){

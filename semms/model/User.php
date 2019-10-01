@@ -85,7 +85,7 @@
         } 
 
         public function loginMobile(){
-            $query = 'SELECT * FROM ' . $this->table . ' WHERE BINARY taff_id = BINARY ?  AND user_type = "Invigilator" LIMIT 0,1';
+            $query = 'SELECT * FROM ' . $this->table . ' WHERE BINARY staff_id = BINARY ?  AND user_type = "Invigilator" LIMIT 0,1';
 
             $stmt = $this->conn->prepare($query);
 

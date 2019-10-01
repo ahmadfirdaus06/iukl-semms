@@ -5,12 +5,13 @@
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
     include_once '../../config/Database.php';
+    include_once '../../config/Email.php';
     include_once '../../model/Attachment.php';
     include_once '../../model/Notification.php';
 
     $database = new Database();
     $db = $database->connect();
-
+    $email = new Email();
     $attachment = new Attachment($db);
     $notification = new Notification($db);
 
@@ -29,6 +30,7 @@
             $count++;
         }
     }
+    
     if ($count == $total){
         $conn = $db;
         $report_id = $attachment->report_id;
@@ -53,6 +55,7 @@
                             'message' => 'Success',
                             'report_id' => $report_id)
                     );
+                    // $email->reportMade();
                 }
                 else{
                     echo json_encode(

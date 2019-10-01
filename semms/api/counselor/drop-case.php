@@ -47,12 +47,20 @@
         WHERE stagehistory.case_id = cases.id AND stagehistory.stage_id = hearing.id AND stagehistory.stage_id = ? && stagehistory.type = ?
         ", [$last_updated, $stage_status, $case_status, $notes_remarks, $final_result, $session_date, $session_start, $session_end, $stage_id, $type]);
 
-        echo json_encode(
-            array(
-                'message' => 'Success'
-            )
-        );
-
+        if ($email->caseClosed()){
+            echo json_encode(
+                array(
+                    'message' =>'Success'
+                )
+            );
+        }
+        else{
+            echo json_encode(
+                array(
+                    'message' =>'Fail'
+                )
+            );
+        }
     }
     catch(Exception $e){
         echo json_encode(

@@ -5,6 +5,9 @@
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
     include_once '../../config/BeanConfig.php';
+    include_once '../../config/Email.php';
+
+    $email = new Email();
 
     $data = json_decode(file_get_contents("php://input"));
 
@@ -95,11 +98,20 @@
         $history->status = 'Ongoing';
         R::store($history);
 
-        echo json_encode(
-            array(
-                'message' => 'Success'
-            )
-        );
+        if ($email->fineSettlement()){
+            echo json_encode(
+                array(
+                    'message' => 'Success'
+                )
+            );
+        }
+        else{
+            echo json_encode(
+                array(
+                    'message' => 'Fail'
+                )
+            );
+        }
 
     }
     catch(Exception $e){

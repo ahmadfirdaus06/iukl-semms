@@ -1,6 +1,88 @@
 var app = angular.module('counselor', []);
-app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $state, $uibModal, $stateParams){
 
+var today = new Date();
+
+app.factory('data', function($http, $rootScope){
+    return {
+        getAllCases: function(){
+            return $http({
+                method : "GET",
+                url : $rootScope.url + "/api/counselor/fetch-all-cases.php",
+                dataType: "application/json;",
+            });
+        },
+        getAllReports: function(){
+            return $http({
+                method : "GET",
+                url : $rootScope.url + "/api/counselor/fetch-all-reports.php",
+                dataType: "application/json;",
+            });
+        },
+        getAllPayments: function(){
+            return $http({
+                method : "GET",
+                url : $rootScope.url + "/api/counselor/fetch-all-payments.php",
+                dataType: "application/json;",
+            });
+        },
+        getAllNotifications: function(){
+            return $http({
+                method : "GET",
+                url : $rootScope.url + "/api/counselor/fetch-all-notifications.php",
+                dataType: "application/json;",
+            });
+        }
+    }
+});
+
+app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $state, $uibModal, $stateParams, data, $q){
+
+    //finish dashboard function before load page
+    $scope.getDashboard = function(){
+        $rootScope.openLoadingModal(function(modal){
+            $scope.loadingModal = modal;
+        });
+        $scope.verifySession(function(){
+            $q.all([
+                data.getAllCases(),
+                data.getAllReports(),
+                data.getAllPayments(),
+                data.getAllNotifications(),
+            ]).then(function success(response){
+                if (response[0].data.message == 'Success'){
+                    $scope.caseCount = response[0].data.caseList.length;
+                }
+                if (response[1].data.message == 'Success'){
+                    $scope.reportCount = response[1].data.reportList.length;
+                }
+                if (response[2].data.message == 'Success'){
+                    $scope.paymentCount = response[2].data.paymentList.length;
+                }
+                if (response[3].data.message == 'Success'){
+                    $scope.notificationList = response[3].data.notificationList;
+                    $scope.unreadCount = response[3].data.unreadCount;
+                }
+                $timeout(function(){
+                    $scope.loadingModal.dismiss();
+                },500);
+                $scope.loadingModal.closed.then(function(){
+                    $('#content').css({'display': 'block'});
+                    $scope.createNotificationTable();
+                });
+                
+            },
+            function error(response){
+                console.log(response);
+                $timeout(function(){
+                    $scope.loadingModal.dismiss();
+                },500);
+                $scope.loadingModal.closed.then(function(){
+                    $('#content').css({'display': 'block'});
+                });
+            });
+        }); 
+    };    
+    
     //redirect
     $scope.go = function(path, id){
         if (id == null){
@@ -13,33 +95,7 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
                 location: 'replace',
                 reload: true
             });
-        }
-        
-    };
-    
-    //finish dashboard function before load page
-    $scope.getDashboard = function(){
-        $rootScope.openLoadingModal(function(modal){
-            $scope.loadingModal = modal;
-        });
-        $scope.verifySession(function(){
-            $scope.getAllNotifications(function(){
-                $scope.getAllCases(function(){
-                    $scope.getAllPayments(function(){
-                        $scope.getAllReports(function(){
-                            $timeout(function(){
-                                $scope.loadingModal.dismiss();
-                                $scope.loadingModal.closed.then(function(){
-                                    $('#content').css({'display': 'block'});
-                                    $scope.createNotificationTable();
-                                    $scope.hasId = false;
-                                });
-                            }, 500);
-                        });
-                    });
-                });
-            });
-        }); 
+        }    
     };
 
     //finish report function before load page
@@ -156,7 +212,7 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
         });
     };
 
-    //get all notifications data
+    //get all cases data
     $scope.getAllCases = function(callback){
         $http({
             method : "GET",
@@ -1350,7 +1406,6 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
     };
 
     $scope.setPayment = function(info){
-        console.log(JSON.stringify(info));
         
         $rootScope.openLoadingModal(function(modal){
             $scope.loadingModal = modal;
@@ -1362,7 +1417,6 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
             dataType: "application/json;",
         })
         .then(function success(response){
-            console.log(response);
             if (response.data.message == "Success"){
                 $timeout(function(){
                     $scope.loadingModal.dismiss();
@@ -1451,7 +1505,12 @@ app.controller('counselorCtrl', function($scope, $rootScope, $http, $timeout, $s
                         size: 'md',
                         controller: function ($scope, $uibModalInstance, paymentDetails) {
                             $scope.close = function(){
-                                $uibModalInstance.dismiss();  
+                                $uibModalInstance.dismiss(); 
+                                $uibModalInstance.closed.then(function(){
+                                    if ($state.current.name == 'main.counselor-dashboard'){
+                                        $state.reload();
+                                    }
+                                }); 
                             };
                             $scope.paymentDetails = paymentDetails;
 

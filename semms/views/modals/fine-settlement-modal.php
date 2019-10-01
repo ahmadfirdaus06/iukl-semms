@@ -41,7 +41,7 @@
         <strong><i class="fas fa-times"></i> Close</strong>
     </button>
     <button class="btn btn-success" ng-click="" type="submit" ng-if="stage.stage_status == 'Ongoing'">
-        <strong >Save and Proceed to Fine Settlement <i class="fas fa-arrow-right"></i> </strong>
+        <strong >Save and Proceed to Payment Setup <i class="fas fa-arrow-right"></i> </strong>
     </button>
 </div>
 </form>
